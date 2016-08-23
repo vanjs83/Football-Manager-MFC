@@ -1,7 +1,7 @@
 ﻿
 // ChildView.cpp : implementation of the CChildView class
 //
-
+//
 #include "stdafx.h"
 #include "Football_Manager.h"
 #include "ChildView.h"
