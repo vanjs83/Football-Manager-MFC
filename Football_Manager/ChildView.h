@@ -29,9 +29,7 @@ public:
 	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
-	BOOL PreTranslateMessage(MSG * pMsg);
-	
-	void OnSize(UINT nType, int cx, int cy);
+
 	void InitPlayers442();
 
 	void InitPlayers352();
@@ -57,6 +55,8 @@ public:
 	// Generated message map functions
 protected:
 	afx_msg void OnPaint();
+	afx_msg BOOL PreTranslateMessage(MSG * pMsg);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnTactic442();

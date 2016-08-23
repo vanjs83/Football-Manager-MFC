@@ -65,7 +65,6 @@ BOOL CChildView::PreTranslateMessage(MSG* pMsg)//prima mouse move
 		if ((GetKeyState(VK_LBUTTON) & 0x100) != 0) {
 			CString val;
 			val.Format(L"%d, %d", mouseP.x - r.left, mouseP.y - r.top);
-			//static1.SetWindowTextW(val);
 			mouseButtonPress = true;
 			OnPaint();
 		}
@@ -116,6 +115,7 @@ void CChildView::OnSize(UINT nType, int cx, int cy)
 	case 8:
 	{
 		InitPlayers532();
+		break;
 	}
 	case 9:
 	{
@@ -598,31 +598,28 @@ void CChildView::OnPaint()
 
 	// TODO: Add your message handler code here
 	int out = 20;
-	int goal = 50;
 	CRect rct;
 	GetClientRect(&rct);
-	RECT r;
-	GetClientRect(&r);
 	CDC* dcc = this->GetDC();//get window
 	CBrush brushGreen(RGB(0, 128, 0));//brush
 	dcc->SelectObject(brushGreen); //select brush tool
-	dcc->Rectangle(0, 0, r.right, r.bottom);//draw rectangle
+	dcc->Rectangle(0, 0, rct.right, rct.bottom);//draw rectangle
 
 	CPen* newPen = new CPen(PS_SOLID | PS_GEOMETRIC, 3, RGB(255, 255, 255));
 	CPen* pOldPen = dcc->SelectObject(newPen);//select pen
 											  //dcc->TextOutW(10, 10, _T("text"));
 											  //crtanje okvira
 	dcc->MoveTo(out, out); //krajnja točka
-	dcc->LineTo(out, r.bottom - out);//početna točka
+	dcc->LineTo(out, rct.bottom - out);//početna točka
 
 	dcc->MoveTo(out, out);
-	dcc->LineTo(r.right - out, out);
+	dcc->LineTo(rct.right - out, out);
 
-	dcc->MoveTo(r.right - out, out);
-	dcc->LineTo(r.right - out, r.bottom - out);
+	dcc->MoveTo(rct.right - out, out);
+	dcc->LineTo(rct.right - out, rct.bottom - out);
 
-	dcc->MoveTo(out, r.bottom - out);
-	dcc->LineTo(r.right - out, r.bottom - out);
+	dcc->MoveTo(out, rct.bottom - out);
+	dcc->LineTo(rct.right - out, rct.bottom - out);
 
 	//crtanje kruga
 	//int diff = (rct.bottom / 2) / 2;
@@ -631,8 +628,8 @@ void CChildView::OnPaint()
 
 	dcc->Ellipse(rct.right / 3 + out, rct.bottom / 4, rct.right / 3 * 2 - out, rct.bottom / 4 * 3);
 
-	dcc->MoveTo((r.right - out + out) / 2, out);
-	dcc->LineTo((r.right - out + out) / 2, r.bottom - out);
+	dcc->MoveTo((rct.right - out + out) / 2, out);
+	dcc->LineTo((rct.right - out + out) / 2, rct.bottom - out);
 
 	//crtanje lijevog gola
 	dcc->MoveTo(out, rct.bottom / 10 * 4);
@@ -641,20 +638,20 @@ void CChildView::OnPaint()
 	dcc->LineTo(out, rct.bottom / 10 * 6);
 
 	//crtanje desnog gola
-	dcc->MoveTo(r.right - out, rct.bottom / 10 * 4);
-	dcc->LineTo(r.right / 30 * 29, rct.bottom / 10 * 4);
-	dcc->LineTo(r.right / 30 * 29, rct.bottom / 10 * 6);
-	dcc->LineTo(r.right - out, rct.bottom / 10 * 6);
+	dcc->MoveTo(rct.right - out, rct.bottom / 10 * 4);
+	dcc->LineTo(rct.right / 30 * 29, rct.bottom / 10 * 4);
+	dcc->LineTo(rct.right / 30 * 29, rct.bottom / 10 * 6);
+	dcc->LineTo(rct.right - out, rct.bottom / 10 * 6);
 	//crtanje lijevog šesnajsterca
 	dcc->MoveTo(out, rct.bottom / 10 * 2);
 	dcc->LineTo(out + rct.right / 8, rct.bottom / 10 * 2);
 	dcc->LineTo(out + rct.right / 8, rct.bottom / 10 * 8);
 	dcc->LineTo(out, rct.bottom / 10 * 8);
 	//crtanje desnog šesnajsterca
-	dcc->MoveTo(r.right - out, rct.bottom / 10 * 2);
-	dcc->LineTo(r.right / 8 * 7 - out, rct.bottom / 10 * 2);
-	dcc->LineTo(r.right / 8 * 7 - out, rct.bottom / 10 * 8);
-	dcc->LineTo(r.right - out, rct.bottom / 10 * 8);
+	dcc->MoveTo(rct.right - out, rct.bottom / 10 * 2);
+	dcc->LineTo(rct.right / 8 * 7 - out, rct.bottom / 10 * 2);
+	dcc->LineTo(rct.right / 8 * 7 - out, rct.bottom / 10 * 8);
+	dcc->LineTo(rct.right - out, rct.bottom / 10 * 8);
 	//lijeva tocka za penal
 	dcc->MoveTo(rct.right / 30 * 3, rct.bottom / 2);
 	dcc->LineTo(rct.right / 30 * 3, rct.bottom / 2);
