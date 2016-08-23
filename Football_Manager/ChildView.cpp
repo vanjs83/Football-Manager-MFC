@@ -69,7 +69,8 @@ BOOL CChildView::PreTranslateMessage(MSG* pMsg)//prima mouse move
 			OnPaint();
 		}
 	}
-	return CChildView::PreTranslateMessage(pMsg);
+	//return CChildView::PreTranslateMessage(pMsg);
+	return true;
 }
 
 void CChildView::OnSize(UINT nType, int cx, int cy)
@@ -745,7 +746,7 @@ void CChildView::OnPaint()
 	void CChildView::OnTactic433()
 	{
 		// TODO: Add your command handler code here
-		MessageBox(_T("4:5:1"), _T("Tactic"));
+		MessageBox(_T("4:3:3"), _T("Tactic"));
 		tactic =3;
 		InitPlayers433();
 		OnPaint();
@@ -756,8 +757,8 @@ void CChildView::OnPaint()
 	{
 		// TODO: Add your command handler code here
 		MessageBox(_T("4:2:3:1"), _T("Tactic"));
-		tactic =4;
-		InitPlayers433();
+		tactic = 4;
+		InitPlayers4231();
 		OnPaint();
 	}
 
@@ -795,9 +796,9 @@ void CChildView::OnPaint()
 	void CChildView::OnTactic532()
 	{
 		// TODO: Add your command handler code here
-		MessageBox(_T("3:5:2"), _T("Tactic"));
+		MessageBox(_T("5:3:2"), _T("Tactic"));
 		tactic =8;
-		InitPlayers352();
+		InitPlayers532();
 		OnPaint();
 	}
 
