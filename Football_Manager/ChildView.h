@@ -4,6 +4,7 @@
 
 
 #pragma once
+#include<fstream>
 #include "Player.h"
 
 // CChildView window
@@ -28,6 +29,8 @@ public:
 // Overrides
 	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+
+	
 
 
 	void InitPlayers442();
@@ -55,8 +58,9 @@ public:
 	// Generated message map functions
 protected:
 	afx_msg void OnPaint();
-	afx_msg BOOL PreTranslateMessage(MSG * pMsg);
+
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnMouseMove(UINT flags, CPoint point);
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnTactic442();
@@ -68,5 +72,6 @@ public:
 	afx_msg void OnTactic352();
 	afx_msg void OnTactic532();
 	afx_msg void OnTactic541();
+	afx_msg void OnOptionsSavetactic();
 };
 

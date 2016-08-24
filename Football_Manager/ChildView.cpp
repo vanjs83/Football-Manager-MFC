@@ -1,11 +1,11 @@
 ﻿
 // ChildView.cpp : implementation of the CChildView class
-
-
+#include<fstream>
+#include<cstdio>
 #include "stdafx.h"
 #include "Football_Manager.h"
 #include "ChildView.h"
-
+#include "askDialog.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -23,6 +23,7 @@ CChildView::~CChildView()
 
 
 BEGIN_MESSAGE_MAP(CChildView, CWnd)
+	ON_WM_MOUSEMOVE()
 	ON_WM_PAINT()
 	ON_WM_SIZE()
 	ON_COMMAND(ID_TACTIC_4, &CChildView::OnTactic442)
@@ -34,6 +35,7 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_COMMAND(ID_TACTIC_9, &CChildView::OnTactic352)
 	ON_COMMAND(ID_TACTIC_10, &CChildView::OnTactic532)
 	ON_COMMAND(ID_TACTIC_11, &CChildView::OnTactic541)
+	ON_COMMAND(ID_OPTIONS_SAVETACTIC, &CChildView::OnOptionsSavetactic)
 END_MESSAGE_MAP()
 
 
@@ -52,25 +54,18 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 
 	return TRUE;
 }
-
-BOOL CChildView::PreTranslateMessage(MSG* pMsg)//prima mouse move
+void CChildView::OnMouseMove(UINT flags, CPoint point)
 {
-	if (pMsg->message == WM_MOUSEMOVE)
-	{
-		GetCursorPos(&mouseP);
-		RECT r;
-		GetWindowRect(&r);
-		ScreenToClient(&mouseP);
-		mouseButtonPress = false;
-		if ((GetKeyState(VK_LBUTTON) & 0x100) != 0) {
-			CString val;
-			val.Format(L"%d, %d", mouseP.x - r.left, mouseP.y - r.top);
-			mouseButtonPress = true;
-			OnPaint();
-		}
+	// see large comment in previous function
+	mouseButtonPress = false;
+	if ((GetKeyState(VK_LBUTTON) & 0x100) != 0) {
+		mouseP.x = point.x;
+		mouseP.y = point.y;
+		mouseButtonPress = true;
+		Invalidate();
+		UpdateWindow();
 	}
-	//return CChildView::PreTranslateMessage(pMsg);
-	return true;
+
 }
 
 void CChildView::OnSize(UINT nType, int cx, int cy)
@@ -127,10 +122,6 @@ void CChildView::OnSize(UINT nType, int cx, int cy)
 	default:
 		break;
 	}
-
-
-
-
 }
 void CChildView::InitPlayers442() {
 	int out = 20;
@@ -594,9 +585,11 @@ void CChildView::InitPlayers541() {
 
 
 void CChildView::OnPaint()
-{
-	CPaintDC dc(this); // device context for painting
+{  
+	
 
+
+	CPaintDC dc(this); // device context for painting
 	// TODO: Add your message handler code here
 	int out = 20;
 	CRect rct;
@@ -608,8 +601,8 @@ void CChildView::OnPaint()
 
 	CPen* newPen = new CPen(PS_SOLID | PS_GEOMETRIC, 3, RGB(255, 255, 255));
 	CPen* pOldPen = dcc->SelectObject(newPen);//select pen
-											  //dcc->TextOutW(10, 10, _T("text"));
-											  //crtanje okvira
+											  
+    //crtanje okvira
 	dcc->MoveTo(out, out); //krajnja točka
 	dcc->LineTo(out, rct.bottom - out);//početna točka
 
@@ -676,6 +669,7 @@ void CChildView::OnPaint()
 						b = true;
 					}
 				}
+
 		if (players[i].x <= rct.Width() / 7)
 		{
 			players[i].position = _T("GK");
@@ -729,19 +723,21 @@ void CChildView::OnPaint()
 		MessageBox(_T("4:4:2"),_T("Tactic"));
 		tactic =1;
 		InitPlayers442();
-		OnPaint();
+		Invalidate();
+		UpdateWindow();
 	}
 
-
+	
 	void CChildView::OnTactic451()
 	{
 		// TODO: Add your command handler code here
 		MessageBox(_T("4:5:1"), _T("Tactic"));
 		tactic =2;
 		InitPlayers451();
-		OnPaint();
+		Invalidate();
+		UpdateWindow();
 	}
-
+	
 
 	void CChildView::OnTactic433()
 	{
@@ -749,7 +745,8 @@ void CChildView::OnPaint()
 		MessageBox(_T("4:3:3"), _T("Tactic"));
 		tactic =3;
 		InitPlayers433();
-		OnPaint();
+		Invalidate();
+		UpdateWindow();
 	}
 
 
@@ -759,7 +756,8 @@ void CChildView::OnPaint()
 		MessageBox(_T("4:2:3:1"), _T("Tactic"));
 		tactic = 4;
 		InitPlayers4231();
-		OnPaint();
+		Invalidate();
+		UpdateWindow();
 	}
 
 
@@ -769,7 +767,8 @@ void CChildView::OnPaint()
 		MessageBox(_T("3:3:3:1"), _T("Tactic"));
 		tactic =5;
 		InitPlayers3331();
-		OnPaint();
+		Invalidate();
+		UpdateWindow();
 	}
 
 
@@ -779,7 +778,8 @@ void CChildView::OnPaint()
 		MessageBox(_T("3:4:3"), _T("Tactic"));
 		tactic =6;
 		InitPlayers343();
-		OnPaint();
+		Invalidate();
+		UpdateWindow();
 	}
 
 
@@ -789,7 +789,8 @@ void CChildView::OnPaint()
 		MessageBox(_T("3:5:2"), _T("Tactic"));
 		tactic = 7;
 		InitPlayers352();
-		OnPaint();
+		Invalidate();
+		UpdateWindow();
 	}
 
 
@@ -799,7 +800,8 @@ void CChildView::OnPaint()
 		MessageBox(_T("5:3:2"), _T("Tactic"));
 		tactic =8;
 		InitPlayers532();
-		OnPaint();
+		Invalidate();
+		UpdateWindow();
 	}
 
 
@@ -809,5 +811,25 @@ void CChildView::OnPaint()
 		MessageBox(_T("5:4:1"), _T("Tactic"));
 		tactic =9;
 		InitPlayers541();
-		OnPaint();
+		Invalidate();
+		UpdateWindow();
+	}
+
+
+	void CChildView::OnOptionsSavetactic()
+	{
+		// TODO: Add your command handler code here
+		askDialog dialog;
+		if (dialog.DoModal() == IDOK)
+		{
+			CStdioFile ffile;
+			CString strLine = _T("Line of text.\n");
+			if (ffile.Open(_T("file.txt" , "w"), CFile::modeWrite | CFile::typeText))
+			ffile.SeekToEnd();
+			ffile.WriteString(strLine); // appends line 
+			ffile.Close();
+		}
+
+	   
+
 	}

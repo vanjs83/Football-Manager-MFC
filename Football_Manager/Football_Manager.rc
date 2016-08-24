@@ -60,6 +60,53 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG1 DIALOGEX 0, 0, 239, 100
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,113,79,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,175,79,50,14
+    LTEXT           "New tactic:",IDC_STATIC,30,20,37,8
+    EDITTEXT        IDC_EDIT1,25,37,78,14,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 232
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 93
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG1 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
 #endif    // Croatian (Croatia) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -94,13 +141,19 @@ IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
 // Toolbar
 //
 
-IDR_MAINFRAME TOOLBAR 16, 15
+IDR_MAINFRAME TOOLBAR 1, 1
 BEGIN
+    BUTTON      ID_BUTTON32784
+    BUTTON      ID_BUTTON32785
+    BUTTON      ID_BUTTON32786
     BUTTON      ID_EDIT_CUT
     BUTTON      ID_EDIT_COPY
     BUTTON      ID_EDIT_PASTE
     SEPARATOR
     BUTTON      ID_APP_ABOUT
+    BUTTON      ID_BUTTON32781
+    BUTTON      ID_BUTTON32783
+    BUTTON      ID_BUTTON32782
 END
 
 
@@ -111,23 +164,6 @@ END
 
 IDR_MAINFRAME MENU
 BEGIN
-    POPUP "&File"
-    BEGIN
-        MENUITEM "E&xit",                       ID_APP_EXIT
-    END
-    POPUP "&Edit"
-    BEGIN
-        MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO
-        MENUITEM SEPARATOR
-        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
-        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
-        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
-    END
-    POPUP "&View"
-    BEGIN
-        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
-        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
-    END
     POPUP "Tactic"
     BEGIN
         MENUITEM "4:4:2",                       ID_TACTIC_4
@@ -140,9 +176,9 @@ BEGIN
         MENUITEM "5:3:2",                       ID_TACTIC_10
         MENUITEM "5:4:1",                       ID_TACTIC_11
     END
-    POPUP "&Help"
+    POPUP "Options"
     BEGIN
-        MENUITEM "&About Football_Manager...",  ID_APP_ABOUT
+        MENUITEM "Save tactic",                 ID_OPTIONS_SAVETACTIC
     END
 END
 

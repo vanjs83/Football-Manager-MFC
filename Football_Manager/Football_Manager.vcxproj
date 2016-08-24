@@ -185,15 +185,18 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="askDialog.h" />
     <ClInclude Include="ChildView.h" />
     <ClInclude Include="Football_Manager.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Tactic.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="askDialog.cpp" />
     <ClCompile Include="ChildView.cpp" />
     <ClCompile Include="Football_Manager.cpp" />
     <ClCompile Include="MainFrm.cpp" />
@@ -204,6 +207,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Tactic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Football_Manager.rc" />
