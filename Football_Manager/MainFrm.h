@@ -24,6 +24,8 @@ public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 
+	
+
 // Implementation
 public:
 	virtual ~CMainFrame();
@@ -41,6 +43,8 @@ protected:  // control bar embedded members
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSetFocus(CWnd *pOldWnd);
+	afx_msg void OnUpdateMenuItem(CCmdUI * pCmdUI);
+	afx_msg void OnMenuClick(UINT nID);
 	DECLARE_MESSAGE_MAP()
 
 };

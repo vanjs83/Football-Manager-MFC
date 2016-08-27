@@ -1,5 +1,6 @@
 ﻿
 // ChildView.cpp : implementation of the CChildView class
+#include<iostream>
 #include<fstream>
 #include<cstdio>
 #include "stdafx.h"
@@ -8,6 +9,7 @@
 #include "askDialog.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
+#define ID_MENUSHOW   2000
 #endif
 
 
@@ -27,14 +29,6 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_PAINT()
 	ON_WM_SIZE()
 	ON_COMMAND(ID_TACTIC_4, &CChildView::OnTactic442)
-	ON_COMMAND(ID_TACTIC_5, &CChildView::OnTactic451)
-	ON_COMMAND(ID_TACTIC_6, &CChildView::OnTactic433)
-	ON_COMMAND(ID_TACTIC_7, &CChildView::OnTactic4231)
-	ON_COMMAND(ID_TACTIC_3, &CChildView::OnTactic3331)
-	ON_COMMAND(ID_TACTIC_8, &CChildView::OnTactic343)
-	ON_COMMAND(ID_TACTIC_9, &CChildView::OnTactic352)
-	ON_COMMAND(ID_TACTIC_10, &CChildView::OnTactic532)
-	ON_COMMAND(ID_TACTIC_11, &CChildView::OnTactic541)
 	ON_COMMAND(ID_OPTIONS_SAVETACTIC, &CChildView::OnOptionsSavetactic)
 END_MESSAGE_MAP()
 
@@ -51,7 +45,7 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 	cs.style &= ~WS_BORDER;
 	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
 		::LoadCursor(NULL, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW+1), NULL);
-
+	ReadTaktike();
 	return TRUE;
 }
 void CChildView::OnMouseMove(UINT flags, CPoint point)
@@ -70,58 +64,7 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 
 void CChildView::OnSize(UINT nType, int cx, int cy)
 {
-	switch (tactic)
-	{
-	case 1:
-	{
 		InitPlayers442();
-		break;
-	}
-	case 2:
-	{
-		InitPlayers451();
-		break;
-
-	}
-	case 3:
-	{
-		InitPlayers433();
-		break;
-	}
-	case 4:
-	{
-		InitPlayers4231();
-		break;
-	}
-	case 5:
-	{
-		InitPlayers3331();
-		break;
-	}
-	case 6:
-	{
-		InitPlayers343();
-		break;
-	}
-	case 7:
-	{
-		InitPlayers352();
-		break;
-	}
-	case 8:
-	{
-		InitPlayers532();
-		break;
-	}
-	case 9:
-	{
-
-		InitPlayers541();
-		break;
-	}
-	default:
-		break;
-	}
 }
 void CChildView::InitPlayers442() {
 	int out = 20;
@@ -169,426 +112,12 @@ void CChildView::InitPlayers442() {
 }
 
 
-void CChildView::InitPlayers352()
-{
-	int out = 20;
-	CRect rect;
-	GetClientRect(&rect);
-	players[0].position = _T("GK");
-	players[1].position = _T("CB");
-	players[2].position = _T("CB");
-	players[3].position = _T("CB");
-	players[4].position = _T("MC");
-	players[5].position = _T("MC");
-	players[6].position = _T("ML");
-	players[7].position = _T("MC");
-	players[8].position = _T("MR");
-	players[9].position = _T("FC");
-	players[10].position = _T("FC");
-
-	players[0].x = out;//gk
-	players[0].y = rect.Height() / 2 - out;
-	//crtanje obrane
-	players[1].x = rect.Width() / 4;//CB
-	players[1].y = rect.Height() / 4 * 3;
-
-	players[2].x = rect.Width() / 4;//CB
-	players[2].y = rect.Height() / 4;
-
-	players[3].x = rect.Width() / 4;//CB
-	players[3].y = rect.Height() / 4 * 2;
-	//crtanje veze
-	players[4].x = rect.Width() / 4 * 2;//MR
-	players[4].y = rect.Height() / 6 * 2;
-
-	players[5].x = rect.Width() / 4 * 2;//MR
-	players[5].y = rect.Height() / 6 * 3;
-
-	players[6].x = rect.Width() / 4 * 2;//ML
-	players[6].y = rect.Height() / 6;
-
-	players[7].x = rect.Width() / 4 * 2;//MC
-	players[7].y = rect.Height() / 6 * 4;
-
-	players[8].x = rect.Width() / 4 * 2;//MR
-	players[8].y = rect.Height() / 6 * 5;
-	//crtanje napada
-	players[9].x = rect.Width() / 4 * 3;//FC
-	players[9].y = rect.Height() / 5 * 2;
-
-	players[10].x = rect.Width() / 4 * 3;//FC
-	players[10].y = rect.Height() / 5 * 3;
-
-
-
-}
-void CChildView::InitPlayers451() {
-
-	int out = 20;
-	CRect rect;
-	GetClientRect(&rect);
-	players[0].position = _T("GK");
-	players[1].position = _T("DR");
-	players[2].position = _T("DL");
-	players[3].position = _T("CB");
-	players[4].position = _T("CB");
-	players[5].position = _T("MR");
-	players[6].position = _T("ML");
-	players[7].position = _T("MC");
-	players[8].position = _T("MC");
-	players[9].position = _T("MC");
-	players[10].position = _T("FC");
-
-	//crtanje obrane
-	players[0].x = out;//gk
-	players[0].y = rect.Height() / 2 - out;
-
-	players[1].x = rect.Width() / 4;//DR
-	players[1].y = rect.Height() / 5 * 4;
-	players[2].x = rect.Width() / 4;//DL
-	players[2].y = rect.Height() / 5;
-	players[3].x = rect.Width() / 4;//CB
-	players[3].y = rect.Height() / 5 * 2;
-	players[4].x = rect.Width() / 4;//CB
-	players[4].y = rect.Height() / 5 * 3;
-	//crtanje veze
-	players[5].x = rect.Width() / 4 * 2;//MR
-	players[5].y = rect.Height() / 6 * 5;
-	players[6].x = rect.Width() / 4 * 2;//ML
-	players[6].y = rect.Height() / 6;
-	players[7].x = rect.Width() / 4 * 2;//MC
-	players[7].y = rect.Height() / 6 * 2;
-	players[8].x = rect.Width() / 4 * 2;//MC
-	players[8].y = rect.Height() / 6 * 3;
-	players[9].x = rect.Width() / 4 * 2;//MC
-	players[9].y = rect.Height() / 6 * 4;
-	//crtanje napada
-
-	players[10].x = rect.Width() / 4 * 3;//FC
-	players[10].y = rect.Height() / 4 * 2;
-
-}
-
-void CChildView::InitPlayers433() {
-	int out = 20;
-	CRect rect;
-	GetClientRect(&rect);
-	players[0].position = _T("GK");
-	players[1].position = _T("DR");
-	players[2].position = _T("DL");
-	players[3].position = _T("CB");
-	players[4].position = _T("CB");
-	players[5].position = _T("MC");
-	players[6].position = _T("MC");
-	players[7].position = _T("MC");
-	players[8].position = _T("RFC");
-	players[9].position = _T("LFC");
-	players[10].position = _T("FC");
-
-	//crtanje obrane
-	players[0].x = out;//gk
-	players[0].y = rect.Height() / 2 - out;
-
-	players[1].x = rect.Width() / 4;//DR
-	players[1].y = rect.Height() / 5 * 4;
-	players[2].x = rect.Width() / 4;//DL
-	players[2].y = rect.Height() / 5;
-	players[3].x = rect.Width() / 4;//CB
-	players[3].y = rect.Height() / 5 * 2;
-	players[4].x = rect.Width() / 4;//CB
-	players[4].y = rect.Height() / 5 * 3;
-	//crtanje veze
-	players[5].x = rect.Width() / 4 * 2;//MC
-	players[5].y = rect.Height() / 4 * 3;
-
-	players[6].x = rect.Width() / 4 * 2;//MC
-	players[6].y = rect.Height() / 4;
-
-	players[7].x = rect.Width() / 4 * 2;//MC
-	players[7].y = rect.Height() / 4 * 2;
-	//crtanje napada
-	players[8].x = rect.Width() / 4 * 3;//FC
-	players[8].y = rect.Height() / 4 * 3;
-
-	players[9].x = rect.Width() / 4 * 3;//FC
-	players[9].y = rect.Height() / 4;
-
-	players[10].x = rect.Width() / 4 * 3;//FC
-	players[10].y = rect.Height() / 4 * 2;
-}
-
-void CChildView::InitPlayers343() {
-
-	int out = 20;
-	CRect rect;
-	GetClientRect(&rect);
-	players[0].position = _T("GK");
-	players[1].position = _T("CB");
-	players[2].position = _T("CB");
-	players[3].position = _T("CB");
-	players[4].position = _T("MC");
-	players[5].position = _T("MR");
-	players[6].position = _T("ML");
-	players[7].position = _T("MC");
-	players[8].position = _T("LFC");
-	players[9].position = _T("RC");
-	players[10].position = _T("FC");
-
-	players[0].x = out;//gk
-	players[0].y = rect.Height() / 2 - out;
-	//crtanje obrane
-	players[1].x = rect.Width() / 4;//CB
-	players[1].y = rect.Height() / 4 * 3;
-
-	players[2].x = rect.Width() / 4;//CB
-	players[2].y = rect.Height() / 4;
-
-	players[3].x = rect.Width() / 4;//CB
-	players[3].y = rect.Height() / 4 * 2;
-	//crtanje veze
-	players[4].x = rect.Width() / 4 * 2;//MR
-	players[4].y = rect.Height() / 5 * 3;
-
-
-	players[5].x = rect.Width() / 4 * 2;//MR
-	players[5].y = rect.Height() / 5 * 4;
-
-	players[6].x = rect.Width() / 4 * 2;//ML
-	players[6].y = rect.Height() / 5;
-
-	players[7].x = rect.Width() / 4 * 2;//MC
-	players[7].y = rect.Height() / 5 * 2;
-
-	//crtanje napada
-	players[8].x = rect.Width() / 4 * 3;//RFC
-	players[8].y = rect.Height() / 4 * 3;
-
-	players[9].x = rect.Width() / 4 * 3;//LFC
-	players[9].y = rect.Height() / 4;
-
-	players[10].x = rect.Width() / 4 * 3;//FC
-	players[10].y = rect.Height() / 4 * 2;
-}
-
-
-
-
-void CChildView::InitPlayers4231() {
-	int out = 20;
-	CRect rect;
-	GetClientRect(&rect);
-	players[0].position = _T("GK");
-	players[1].position = _T("DR");
-	players[2].position = _T("DL");
-	players[3].position = _T("CB");
-	players[4].position = _T("CB");
-	players[5].position = _T("MC");
-	players[6].position = _T("MC");
-	players[7].position = _T("AML");
-	players[8].position = _T("AMC");
-	players[9].position = _T("AMR");
-	players[10].position = _T("FC");
-
-	//crtanje obrane
-	players[0].x = out;//gk
-	players[0].y = rect.Height() / 2 - out;
-
-	players[1].x = rect.Width() / 5;//DR
-	players[1].y = rect.Height() / 5 * 4;
-	players[2].x = rect.Width() / 5;//DL
-	players[2].y = rect.Height() / 5;
-	players[3].x = rect.Width() / 5;//CB
-	players[3].y = rect.Height() / 5 * 2;
-	players[4].x = rect.Width() / 5;//CB
-	players[4].y = rect.Height() / 5 * 3;
-	//crtanje veze
-	players[5].x = rect.Width() / 5 * 2;//MC
-	players[5].y = rect.Height() / 6 * 2;
-
-	players[6].x = rect.Width() / 5 * 2;//MC
-	players[6].y = rect.Height() / 5 * 3;
-
-	players[7].x = rect.Width() / 5 * 3;//AML
-	players[7].y = rect.Height() / 4;
-
-	players[8].x = rect.Width() / 5 * 3;//AMC
-	players[8].y = rect.Height() / 4 * 2;
-
-	players[9].x = rect.Width() / 5 * 3;//AMR
-	players[9].y = rect.Height() / 4 * 3;
-
-	//crtanje napada
-	players[10].x = rect.Width() / 5 * 4;//FC
-	players[10].y = rect.Height() / 4 * 2;
-
-
-}
-void CChildView::InitPlayers3331() {
-	//crtanje obrane
-
-	int out = 20;
-	CRect rect;
-	GetClientRect(&rect);
-	players[0].position = _T("GK");
-	players[1].position = _T("CB");
-	players[2].position = _T("CB");
-	players[3].position = _T("CB");
-	players[4].position = _T("MC");
-	players[5].position = _T("MC");
-	players[6].position = _T("MC");
-	players[7].position = _T("AML");
-	players[8].position = _T("AMC");
-	players[9].position = _T("AMR");
-	players[10].position = _T("FC");
-
-	players[0].x = out;//gk
-	players[0].y = rect.Height() / 2 - out;
-	//crtanje obrane
-	players[1].x = rect.Width() / 5;//CB
-	players[1].y = rect.Height() / 4 * 3;
-
-	players[2].x = rect.Width() / 5;//CB
-	players[2].y = rect.Height() / 4;
-
-	players[3].x = rect.Width() / 5;//CB
-	players[3].y = rect.Height() / 4 * 2;
-	//crtanje veze
-	players[4].x = rect.Width() / 5 * 2;//MC
-	players[4].y = rect.Height() / 4 * 2;
-
-
-	players[5].x = rect.Width() / 5 * 2;//MC
-	players[5].y = rect.Height() / 4 * 3;
-
-	players[6].x = rect.Width() / 5 * 2;//MC
-	players[6].y = rect.Height() / 4;
-	//crtanje atack midfilder
-	players[7].x = rect.Width() / 5 * 3;//AML
-	players[7].y = rect.Height() / 4;
-
-	players[8].x = rect.Width() / 5 * 3;//AMC
-	players[8].y = rect.Height() / 4 * 2;
-
-	players[9].x = rect.Width() / 5 * 3;//AMR
-	players[9].y = rect.Height() / 4 * 3;
-
-	players[10].x = rect.Width() / 5 * 4;//FC
-	players[10].y = rect.Height() / 4 * 2;
-
-
-}
-
-void CChildView::InitPlayers532() {
-
-	int out = 20;
-	CRect rect;
-	GetClientRect(&rect);
-	players[0].position = _T("GK");
-	players[1].position = _T("DR");
-	players[2].position = _T("DL");
-	players[3].position = _T("CB");
-	players[4].position = _T("CB");
-	players[5].position = _T("CB");
-	players[6].position = _T("MC");
-	players[7].position = _T("MC");
-	players[8].position = _T("MC");
-	players[9].position = _T("FC");
-	players[10].position = _T("FC");
-
-	players[0].x = out;//gk
-	players[0].y = rect.Height() / 2 - out;
-	//crtanje obrane
-	players[1].x = rect.Width() / 4;//DR
-	players[1].y = rect.Height() / 6 * 5;
-
-	players[2].x = rect.Width() / 4;//DL
-	players[2].y = rect.Height() / 6;
-
-	players[3].x = rect.Width() / 4;//CB
-	players[3].y = rect.Height() / 6 * 2;
-
-	players[4].x = rect.Width() / 4;//CB
-	players[4].y = rect.Height() / 6 * 3;
-
-	players[5].x = rect.Width() / 4;//CB
-	players[5].y = rect.Height() / 6 * 4;
-	//crtanje veze 
-	players[6].x = rect.Width() / 4 * 2;//MC
-	players[6].y = rect.Height() / 4 * 3;
-
-	players[7].x = rect.Width() / 4 * 2;//MC
-	players[7].y = rect.Height() / 4;
-
-	players[8].x = rect.Width() / 4 * 2;//MC
-	players[8].y = rect.Height() / 4 * 2;
-	//crtanje napada
-	players[9].x = rect.Width() / 4 * 3;//FC
-	players[9].y = rect.Height() / 5 * 2;
-
-	players[10].x = rect.Width() / 4 * 3;//FC
-	players[10].y = rect.Height() / 5 * 3;
-
-}
-void CChildView::InitPlayers541() {
-
-	int out = 20;
-	CRect rect;
-	GetClientRect(&rect);
-	players[0].position = _T("GK");
-	players[1].position = _T("DR");
-	players[2].position = _T("DL");
-	players[3].position = _T("CB");
-	players[4].position = _T("CB");
-	players[5].position = _T("CB");
-	players[6].position = _T("MR");
-	players[7].position = _T("ML");
-	players[8].position = _T("MC");
-	players[9].position = _T("MC");
-	players[10].position = _T("FC");
-
-	players[0].x = out;//gk
-	players[0].y = rect.Height() / 2 - out;
-	//crtanje obrane
-	players[1].x = rect.Width() / 4;//DR
-	players[1].y = rect.Height() / 6 * 5;
-
-	players[2].x = rect.Width() / 4;//DL
-	players[2].y = rect.Height() / 6;
-
-	players[3].x = rect.Width() / 4;//CB
-	players[3].y = rect.Height() / 6 * 2;
-
-	players[4].x = rect.Width() / 4;//CB
-	players[4].y = rect.Height() / 6 * 3;
-
-	players[5].x = rect.Width() / 4;//CB
-	players[5].y = rect.Height() / 6 * 4;
-	//crtanje veze 
-	players[6].x = rect.Width() / 4 * 2;//MR
-	players[6].y = rect.Height() / 5 * 4;
-
-	players[7].x = rect.Width() / 4 * 2;//ML
-	players[7].y = rect.Height() / 5;
-
-	players[8].x = rect.Width() / 4 * 2;//MC
-	players[8].y = rect.Height() / 5 * 2;
-
-	players[9].x = rect.Width() / 4 * 2;//MC
-	players[9].y = rect.Height() / 5 * 3;
-	//crtanje napada
-	players[10].x = rect.Width() / 4 * 3;//FC
-	players[10].y = rect.Height() / 4 * 2;
-
-}
-
 
 
 
 void CChildView::OnPaint()
 {  
 	
-
-
 	CPaintDC dc(this); // device context for painting
 	// TODO: Add your message handler code here
 	int out = 20;
@@ -616,10 +145,6 @@ void CChildView::OnPaint()
 	dcc->LineTo(rct.right - out, rct.bottom - out);
 
 	//crtanje kruga
-	//int diff = (rct.bottom / 2) / 2;
-	//left               //top             //right                        //bottom
-	//dcc->Ellipse((rct.right / 2) - diff, diff + out, (rct.right / 2) + diff, (rct.bottom / 2) + diff - out);
-
 	dcc->Ellipse(rct.right / 3 + out, rct.bottom / 4, rct.right / 3 * 2 - out, rct.bottom / 4 * 3);
 
 	dcc->MoveTo((rct.right - out + out) / 2, out);
@@ -682,7 +207,7 @@ void CChildView::OnPaint()
 			if (players[i].y >= rct.Height() / 5 * 4)
 				players[i].position = _T("DR");
 		}
-		else if (players[i].x >= rct.Width() / 7 * 2 && players[i].x >= rct.Width() / 7 * 3 && players[i].x <= rct.Width() / 7 * 4) {
+		else if (players[i].x >= rct.Width() / 7 * 2 && players[i].x <= rct.Width() / 7 * 4) {
 
 			players[i].position = _T("MC");
 			if (players[i].y <= rct.Height() / 5)
@@ -698,19 +223,17 @@ void CChildView::OnPaint()
 				players[i].position = _T("AMR");
 		}
 
-		else if (players[i].x >= rct.Width() / 7 * 6) {
+		//else if (players[i].x >= rct.Width() / 7 * 6) {
+		else{
 			players[i].position = _T("FC");
-			if (players[i].y <= rct.Height() / 5 * 2)
+			if (players[i].y <= rct.Height() / 5 )
 				players[i].position = _T("LFC");
-			if (players[i].y >= rct.Height() / 5 * 3)
+			if (players[i].y >= rct.Height() / 5 * 4)
 				players[i].position = _T("RFC");
 
 		}
 
 		dcc->TextOutW(players[i].x, players[i].y, players[i].position);
-
-
-
 
 		// Do not call CWnd::OnPaint() for painting messages
 	}
@@ -728,92 +251,116 @@ void CChildView::OnPaint()
 	}
 
 	
-	void CChildView::OnTactic451()
+
+	void CChildView::SaveTactic()
 	{
-		// TODO: Add your command handler code here
-		MessageBox(_T("4:5:1"), _T("Tactic"));
-		tactic =2;
-		InitPlayers451();
-		Invalidate();
-		UpdateWindow();
+
+		//Pisi
+		CStdioFile ffile;
+		TCHAR szPath[MAX_PATH];
+		if (SUCCEEDED(SHGetFolderPath(NULL,
+			CSIDL_PERSONAL | CSIDL_FLAG_CREATE,
+			NULL,
+			0,
+			szPath)))
+		{
+			PathAppend(szPath, TEXT("file.bin"));
+			if (ffile.Open(szPath, CFile::modeCreate | CFile::modeWrite | CFile::typeText))
+			{
+				POSITION takListPos = tacticList.GetHeadPosition();
+				while (takListPos != NULL)
+				{
+					Tactic tak = tacticList.GetNext(takListPos);
+					CString str;
+					str.Format(L"%s\n", tak.name);
+					ffile.WriteString(str);
+					for (int i = 0; i < 11; i++) {
+
+						str.Format(L"%s\n", tak.player[i].position);
+						ffile.WriteString(str);
+						str.Format(L"%g\n", tak.player[i].x);
+						ffile.WriteString(str);
+						str.Format(L"%g\n", tak.player[i].y);
+						ffile.WriteString(str);
+
+					}
+				}
+				ffile.Close();
+			}
+		}
 	}
+
+
+
+	void CChildView::addToMenu(CString name, int id)
+	{
+
+		// Get the menu from the application window.
+		CMenu* mmenu = AfxGetMainWnd()->GetMenu();
+		int pos = FindMenuItem(mmenu, _T("Tactic"));
+		CMenu* submenu = mmenu->GetSubMenu(pos);
+		UINT mid = submenu->GetMenuItemID(pos);
+		if (pos == -1)
+			return;
+		submenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUSHOW + id, name);
+	    
 	
-
-	void CChildView::OnTactic433()
-	{
-		// TODO: Add your command handler code here
-		MessageBox(_T("4:3:3"), _T("Tactic"));
-		tactic =3;
-		InitPlayers433();
-		Invalidate();
-		UpdateWindow();
 	}
 
 
-	void CChildView::OnTactic4231()
+
+	int CChildView::FindMenuItem(CMenu* Menu, LPCTSTR MenuString)
 	{
-		// TODO: Add your command handler code here
-		MessageBox(_T("4:2:3:1"), _T("Tactic"));
-		tactic = 4;
-		InitPlayers4231();
-		Invalidate();
-		UpdateWindow();
+		ASSERT(Menu);
+		ASSERT(::IsMenu(Menu->GetSafeHmenu()));
+
+		int count = Menu->GetMenuItemCount();
+		for (int i = 0; i < count; i++)
+		{
+			CString str;
+			if (Menu->GetMenuString(i, str, MF_BYPOSITION) && str.Compare(MenuString) == 0)
+				return i;
+		}
+		return -1;
 	}
 
 
-	void CChildView::OnTactic3331()
+
+	void CChildView::ReadTaktike()
 	{
-		// TODO: Add your command handler code here
-		MessageBox(_T("3:3:3:1"), _T("Tactic"));
-		tactic =5;
-		InitPlayers3331();
-		Invalidate();
-		UpdateWindow();
+		//citaj
+		tacticList.RemoveAll();
+		CStdioFile ffile;
+		TCHAR szPath[MAX_PATH];
+		if (SUCCEEDED(SHGetFolderPath(NULL,
+			CSIDL_PERSONAL | CSIDL_FLAG_CREATE,
+			NULL,
+			0,
+			szPath)))
+		{
+			PathAppend(szPath, TEXT("file.bin"));
+			if (ffile.Open(szPath, CFile::modeRead | CFile::typeText))
+			{
+				Tactic tc;
+				CString str;
+				while (ffile.ReadString(tc.name))
+				{
+					for (int i = 0; i < 11; i++) {
+						ffile.ReadString(tc.player[i].position);
+						ffile.ReadString(str);
+						tc.player[i].x = _wtof(str);
+						ffile.ReadString(str);
+						tc.player[i].y = _wtof(str);
+					}
+					addToMenu(tc.name, tacticList.GetCount());
+					tacticList.AddTail(tc);
+	
+				}
+				ffile.Close();
+			}
+		}
 	}
 
-
-	void CChildView::OnTactic343()
-	{
-		// TODO: Add your command handler code here
-		MessageBox(_T("3:4:3"), _T("Tactic"));
-		tactic =6;
-		InitPlayers343();
-		Invalidate();
-		UpdateWindow();
-	}
-
-
-	void CChildView::OnTactic352()
-	{
-		// TODO: Add your command handler code here
-		MessageBox(_T("3:5:2"), _T("Tactic"));
-		tactic = 7;
-		InitPlayers352();
-		Invalidate();
-		UpdateWindow();
-	}
-
-
-	void CChildView::OnTactic532()
-	{
-		// TODO: Add your command handler code here
-		MessageBox(_T("5:3:2"), _T("Tactic"));
-		tactic =8;
-		InitPlayers532();
-		Invalidate();
-		UpdateWindow();
-	}
-
-
-	void CChildView::OnTactic541()
-	{
-		// TODO: Add your command handler code here
-		MessageBox(_T("5:4:1"), _T("Tactic"));
-		tactic =9;
-		InitPlayers541();
-		Invalidate();
-		UpdateWindow();
-	}
 
 
 	void CChildView::OnOptionsSavetactic()
@@ -822,14 +369,35 @@ void CChildView::OnPaint()
 		askDialog dialog;
 		if (dialog.DoModal() == IDOK)
 		{
-			CStdioFile ffile;
-			CString strLine = _T("Line of text.\n");
-			if (ffile.Open(_T("file.txt" , "w"), CFile::modeWrite | CFile::typeText))
-			ffile.SeekToEnd();
-			ffile.WriteString(strLine); // appends line 
-			ffile.Close();
+			Tactic tak;
+			tak.name=dialog.EditValue;
+			for (int i = 0; i < 11; i++) {
+				tak.player[i] = players[i];
+			}
+			addToMenu(tak.name, tacticList.GetCount());
+			tacticList.AddTail(tak);
+			SaveTactic();
+		
 		}
+	}
 
-	   
-
+	void CChildView::OnMenuClick(UINT nID)
+	{
+		int id = ID_MENUSHOW;
+		POSITION takListPos = tacticList.GetHeadPosition();
+		while (takListPos != NULL)
+		{
+			Tactic tak = tacticList.GetNext(takListPos);
+			if (nID == id)
+			{
+				for (int i = 0; i < 11; i++) {
+					players[i] = tak.player[i];
+				}
+				// taktikaClicked = true;
+				Invalidate();
+				UpdateWindow();
+				return;
+			}
+			id++;
+		}
 	}

@@ -9,6 +9,7 @@
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
+#define ID_MENUSHOW   2000
 #endif
 
 // CMainFrame
@@ -18,6 +19,9 @@ IMPLEMENT_DYNAMIC(CMainFrame, CFrameWnd)
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
 	ON_WM_SETFOCUS()
+	ON_UPDATE_COMMAND_UI_RANGE(ID_MENUSHOW, ID_MENUSHOW + 20, OnUpdateMenuItem)
+	ON_COMMAND_RANGE(ID_MENUSHOW, ID_MENUSHOW + 20, OnMenuClick)
+
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -39,6 +43,9 @@ CMainFrame::~CMainFrame()
 {
 }
 
+
+
+
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
@@ -50,14 +57,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create view window\n");
 		return -1;
 	}
-
+	/*
 	if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
 		!m_wndToolBar.LoadToolBar(IDR_MAINFRAME))
 	{
 		TRACE0("Failed to create toolbar\n");
 		return -1;      // fail to create
 	}
-
+	*/
 	if (!m_wndStatusBar.Create(this))
 	{
 		TRACE0("Failed to create status bar\n");
@@ -66,9 +73,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
 
 	// TODO: Delete these three lines if you don't want the toolbar to be dockable
-	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
-	EnableDocking(CBRS_ALIGN_ANY);
-	DockControlBar(&m_wndToolBar);
+	//m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
+	//EnableDocking(CBRS_ALIGN_ANY);
+	//DockControlBar(&m_wndToolBar);
 
 
 	return 0;
@@ -87,6 +94,8 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 }
 
 // CMainFrame diagnostics
+
+
 
 #ifdef _DEBUG
 void CMainFrame::AssertValid() const
@@ -119,3 +128,14 @@ BOOL CMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO*
 	return CFrameWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }
 
+void CMainFrame::OnUpdateMenuItem(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(true);
+}
+
+
+void CMainFrame::OnMenuClick(UINT nID)
+{
+	//transfer call to child
+	m_wndView.OnMenuClick(nID);
+}

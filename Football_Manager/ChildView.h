@@ -6,7 +6,7 @@
 #pragma once
 #include<fstream>
 #include "Player.h"
-
+#include "Tactic.h"
 // CChildView window
 
 class CChildView : public CWnd
@@ -14,7 +14,7 @@ class CChildView : public CWnd
 // Construction
 public:
 	CChildView();
-
+	CList<Tactic, Tactic>tacticList;
 // Attributes
 public:
 	int tactic = 1;
@@ -29,49 +29,25 @@ public:
 // Overrides
 	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-
-	
-
-
 	void InitPlayers442();
-
-	void InitPlayers352();
-
-	void InitPlayers451();
-
-	void InitPlayers433();
-
-	void InitPlayers343();
-
-	void InitPlayers4231();
-
-	void InitPlayers3331();
-
-	void InitPlayers532();
-
-	void InitPlayers541();
-
 // Implementation
 public:
 	virtual ~CChildView();
-
 	// Generated message map functions
 protected:
 	afx_msg void OnPaint();
-
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnMouseMove(UINT flags, CPoint point);
+	afx_msg void OnTactic442();
+	afx_msg void OnOptionsSavetactic();
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnTactic442();
-	afx_msg void OnTactic451();
-	afx_msg void OnTactic433();
-	afx_msg void OnTactic4231();
-	afx_msg void OnTactic3331();
-	afx_msg void OnTactic343();
-	afx_msg void OnTactic352();
-	afx_msg void OnTactic532();
-	afx_msg void OnTactic541();
-	afx_msg void OnOptionsSavetactic();
+	
+	void SaveTactic();
+	void addToMenu(CString name, int id);
+	int FindMenuItem(CMenu * Menu, LPCTSTR MenuString);
+	void ReadTaktike();
+
+	void OnMenuClick(UINT nID);
 };
 

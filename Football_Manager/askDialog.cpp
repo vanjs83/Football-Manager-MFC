@@ -29,7 +29,20 @@ void askDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(askDialog, CDialogEx)
+	
+
+
+	ON_BN_CLICKED(IDOK, &askDialog::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
 // askDialog message handlers
+
+
+void askDialog::OnBnClickedOk()
+{
+	// TODO: Add your control notification handler code here
+
+	GetDlgItemText(IDC_EDIT1,EditValue);
+	CDialogEx::OnOK();
+}

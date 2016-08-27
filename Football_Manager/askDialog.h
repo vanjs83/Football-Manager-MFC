@@ -23,4 +23,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CEdit askEdit;
+	afx_msg void OnBnClickedOk();
+	CString EditValue;
 };
