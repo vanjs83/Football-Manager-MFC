@@ -64,11 +64,15 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 
 void CChildView::OnSize(UINT nType, int cx, int cy)
 {
-		InitPlayers442();
+		
+		if (!init)
+			InitPlayers442();
+
 }
+
 void CChildView::InitPlayers442() {
-	int out = 20;
-	CRect rect;
+	//int out = 20;
+	//CRect rct;
 	GetClientRect(&rect);
 	players[0].position = _T("GK");
 	players[1].position = _T("DL");
@@ -107,12 +111,13 @@ void CChildView::InitPlayers442() {
 	players[9].y = rect.Height() / 5 * 2;
 	players[10].x = rect.Width() / 4 * 3;//FC
 	players[10].y = rect.Height() / 5 * 3;
-
+	// relative rx, ry
+	for (int i = 0; i < 11; i++) {
+		players[i].rx = players[i].x / rect.Width();
+		players[i].ry = players[i].y / rect.Height();
+	}
 
 }
-
-
-
 
 
 void CChildView::OnPaint()
@@ -120,8 +125,8 @@ void CChildView::OnPaint()
 	
 	CPaintDC dc(this); // device context for painting
 	// TODO: Add your message handler code here
-	int out = 20;
-	CRect rct;
+	//int out = 20;
+	//CRect rct;
 	GetClientRect(&rct);
 	CDC* dcc = this->GetDC();//get window
 	CBrush brushGreen(RGB(0, 128, 0));//brush
@@ -182,7 +187,12 @@ void CChildView::OnPaint()
 	// Do not call CWnd::OnPaint() for painting messages
 	BOOL b = false;
 
+	//crtanje igraca na terenu!!
 	for (int i = 0; i < 11; i++) {
+		//calc relative
+		players[i].x = rct.Width() * players[i].rx;
+		players[i].y = rct.Height() * players[i].ry;
+		//
 		if (mouseButtonPress)
 			if (mouseP.x + out >= players[i].x && mouseP.x <= players[i].x + out)
 				if (mouseP.y + out >= players[i].y && mouseP.y <= players[i].y + out)
@@ -191,6 +201,10 @@ void CChildView::OnPaint()
 					{
 						players[i].x = mouseP.x;
 						players[i].y = mouseP.y;
+						players[i].rx = players[i].x / rct.Width();
+						players[i].ry = players[i].y / rct.Height();
+						//
+						init = true;
 						b = true;
 					}
 				}
@@ -232,11 +246,13 @@ void CChildView::OnPaint()
 				players[i].position = _T("RFC");
 
 		}
-
-		dcc->TextOutW(players[i].x, players[i].y, players[i].position);
-
+	
+		dcc->SetTextAlign(TA_CENTER);
+		dcc->SetBkMode(TMT_TRANSPARENT);
+		dcc->TextOutW(players[i].x, players[i].y , players[i].position);
 		// Do not call CWnd::OnPaint() for painting messages
 	}
+	
 }
 
 
@@ -254,15 +270,13 @@ void CChildView::OnPaint()
 
 	void CChildView::SaveTactic()
 	{
-
 		//Pisi
+		
 		CStdioFile ffile;
 		TCHAR szPath[MAX_PATH];
 		if (SUCCEEDED(SHGetFolderPath(NULL,
 			CSIDL_PERSONAL | CSIDL_FLAG_CREATE,
-			NULL,
-			0,
-			szPath)))
+			NULL, 0,  szPath)))
 		{
 			PathAppend(szPath, TEXT("file.bin"));
 			if (ffile.Open(szPath, CFile::modeCreate | CFile::modeWrite | CFile::typeText))
@@ -282,7 +296,10 @@ void CChildView::OnPaint()
 						ffile.WriteString(str);
 						str.Format(L"%g\n", tak.player[i].y);
 						ffile.WriteString(str);
-
+						str.Format(L"%g\n", tak.player[i].rx);
+						ffile.WriteString(str);
+						str.Format(L"%g\n", tak.player[i].ry);
+						ffile.WriteString(str);
 					}
 				}
 				ffile.Close();
@@ -303,8 +320,6 @@ void CChildView::OnPaint()
 		if (pos == -1)
 			return;
 		submenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUSHOW + id, name);
-	    
-	
 	}
 
 
@@ -328,6 +343,7 @@ void CChildView::OnPaint()
 
 	void CChildView::ReadTaktike()
 	{
+	
 		//citaj
 		tacticList.RemoveAll();
 		CStdioFile ffile;
@@ -348,9 +364,18 @@ void CChildView::OnPaint()
 					for (int i = 0; i < 11; i++) {
 						ffile.ReadString(tc.player[i].position);
 						ffile.ReadString(str);
+
 						tc.player[i].x = _wtof(str);
 						ffile.ReadString(str);
+
 						tc.player[i].y = _wtof(str);
+						ffile.ReadString(str);
+
+						tc.player[i].rx = _wtof(str);
+						ffile.ReadString(str);
+
+						tc.player[i].ry = _wtof(str);
+						ffile.ReadString(str);
 					}
 					addToMenu(tc.name, tacticList.GetCount());
 					tacticList.AddTail(tc);
@@ -372,12 +397,14 @@ void CChildView::OnPaint()
 			Tactic tak;
 			tak.name=dialog.EditValue;
 			for (int i = 0; i < 11; i++) {
+				// relative rx, ry
+				players[i].rx = players[i].x / rct.Width();
+				players[i].ry = players[i].y / rct.Height();
 				tak.player[i] = players[i];
 			}
 			addToMenu(tak.name, tacticList.GetCount());
 			tacticList.AddTail(tak);
 			SaveTactic();
-		
 		}
 	}
 
@@ -393,7 +420,6 @@ void CChildView::OnPaint()
 				for (int i = 0; i < 11; i++) {
 					players[i] = tak.player[i];
 				}
-				// taktikaClicked = true;
 				Invalidate();
 				UpdateWindow();
 				return;

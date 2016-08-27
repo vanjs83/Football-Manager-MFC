@@ -18,11 +18,12 @@ public:
 // Attributes
 public:
 	int tactic = 1;
+	int out = 20;
 	Player players[11];
 	POINT mouseP;
 	BOOL mouseButtonPress;
-
-
+	BOOL init=false;
+	CRect rct, rect;
 // Operations
 public:
 
