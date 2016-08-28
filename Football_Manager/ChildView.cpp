@@ -1,17 +1,19 @@
 ﻿
 // ChildView.cpp : implementation of the CChildView class
-#include<iostream>
-#include<fstream>
-#include<cstdio>
+
+
 #include "stdafx.h"
 #include "Football_Manager.h"
 #include "ChildView.h"
 #include "askDialog.h"
+#include <afxwin.h>
+#include <string>
+#include "MainFrm.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
-#define ID_MENUSHOW   2000
 #endif
-
+#define ID_MENUSHOW   2000
 
 // CChildView
 
@@ -48,6 +50,7 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 	ReadTaktike();
 	return TRUE;
 }
+
 void CChildView::OnMouseMove(UINT flags, CPoint point)
 {
 	// see large comment in previous function
@@ -322,8 +325,9 @@ void CChildView::OnPaint()
 		submenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUSHOW + id, name);
 	}
 
-
-
+	// FindMenuItem() will find a menu item string from the specified
+	// popup menu and returns its position (0-based) in the specified 
+	// popup menu. It returns -1 if no such menu item string is found.
 	int CChildView::FindMenuItem(CMenu* Menu, LPCTSTR MenuString)
 	{
 		ASSERT(Menu);
@@ -343,7 +347,7 @@ void CChildView::OnPaint()
 
 	void CChildView::ReadTaktike()
 	{
-	
+
 		//citaj
 		tacticList.RemoveAll();
 		CStdioFile ffile;
@@ -379,12 +383,13 @@ void CChildView::OnPaint()
 					}
 					addToMenu(tc.name, tacticList.GetCount());
 					tacticList.AddTail(tc);
-	
+
 				}
 				ffile.Close();
 			}
 		}
 	}
+	
 
 
 
@@ -419,6 +424,7 @@ void CChildView::OnPaint()
 			{
 				for (int i = 0; i < 11; i++) {
 					players[i] = tak.player[i];
+			
 				}
 				Invalidate();
 				UpdateWindow();

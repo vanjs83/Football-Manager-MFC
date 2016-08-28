@@ -5,6 +5,8 @@ class Tactic
 public:
 	CString name;
 	Player player[11];
+
+	
 	Tactic();
 
 	~Tactic();

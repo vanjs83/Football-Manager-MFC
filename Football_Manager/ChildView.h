@@ -1,12 +1,12 @@
 
 // ChildView.h : interface of the CChildView class
 //
-
-
-#pragma once
 #include<fstream>
 #include "Player.h"
 #include "Tactic.h"
+
+#pragma once
+
 // CChildView window
 
 class CChildView : public CWnd
@@ -26,14 +26,18 @@ public:
 	CRect rct, rect;
 // Operations
 public:
-
+	void InitPlayers442();
+	void addToMenu(CString name, int id);
+	void SaveTactic();
 // Overrides
 	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	void InitPlayers442();
+	virtual void ReadTaktike();
 // Implementation
 public:
 	virtual ~CChildView();
+	int FindMenuItem(CMenu * Menu, LPCTSTR MenuString);
+	void OnMenuClick(UINT nID);
 	// Generated message map functions
 protected:
 	afx_msg void OnPaint();
@@ -44,11 +48,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	
-	void SaveTactic();
-	void addToMenu(CString name, int id);
-	int FindMenuItem(CMenu * Menu, LPCTSTR MenuString);
-	void ReadTaktike();
+	
 
-	void OnMenuClick(UINT nID);
 };
 
