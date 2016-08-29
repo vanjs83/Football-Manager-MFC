@@ -31,7 +31,8 @@ public:
 	void SaveTactic();
 // Overrides
 	protected:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	
+		virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void ReadTaktike();
 // Implementation
 public:
@@ -41,6 +42,7 @@ public:
 	// Generated message map functions
 protected:
 	afx_msg void OnPaint();
+	afx_msg BOOL OnEraseBkgnd(CDC * pDC);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnMouseMove(UINT flags, CPoint point);
 	afx_msg void OnTactic442();

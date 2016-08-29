@@ -30,6 +30,7 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_MOUSEMOVE()
 	ON_WM_PAINT()
 	ON_WM_SIZE()
+	ON_WM_ERASEBKGND()
 	ON_COMMAND(ID_TACTIC_4, &CChildView::OnTactic442)
 	ON_COMMAND(ID_OPTIONS_SAVETACTIC, &CChildView::OnOptionsSavetactic)
 END_MESSAGE_MAP()
@@ -37,6 +38,11 @@ END_MESSAGE_MAP()
 
 
 // CChildView message handlers
+
+BOOL CChildView::OnEraseBkgnd(CDC* pDC)
+{
+	return false;
+}
 
 BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs) 
 {
