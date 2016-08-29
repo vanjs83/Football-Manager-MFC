@@ -250,7 +250,7 @@ void CChildView::OnPaint()
 
 		}
 	
-		dcc->SetTextAlign(TA_CENTER);
+		dcc->SetTextAlign(TA_LEFT);
 		dcc->SetBkMode(TMT_TRANSPARENT);
 		dcc->TextOutW(players[i].x, players[i].y , players[i].position);
 		// Do not call CWnd::OnPaint() for painting messages
@@ -262,7 +262,7 @@ void CChildView::OnPaint()
 	void CChildView::OnTactic442()
 	{
 		// TODO: Add your command handler code here
-		MessageBox(_T("4:4:2"),_T("Tactic"));
+	//	MessageBox(_T("4:4:2"),_T("Tactic"));
 		tactic =1;
 		InitPlayers442();
 		Invalidate();
@@ -281,7 +281,7 @@ void CChildView::OnPaint()
 			CSIDL_PERSONAL | CSIDL_FLAG_CREATE,
 			NULL, 0,  szPath)))
 		{
-			PathAppend(szPath, TEXT("file.bin"));
+			PathAppend(szPath, TEXT("igraci.bin"));
 			if (ffile.Open(szPath, CFile::modeCreate | CFile::modeWrite | CFile::typeText))
 			{
 				POSITION takListPos = tacticList.GetHeadPosition();
@@ -358,29 +358,32 @@ void CChildView::OnPaint()
 			0,
 			szPath)))
 		{
-			PathAppend(szPath, TEXT("file.bin"));
+			PathAppend(szPath, TEXT("igraci.bin"));
 			if (ffile.Open(szPath, CFile::modeRead | CFile::typeText))
 			{
 				Tactic tc;
 				CString str;
-				while (ffile.ReadString(tc.name))
+				while (ffile.ReadString(tc.name))//citam ime taktike
 				{
 					for (int i = 0; i < 11; i++) {
+					
 						ffile.ReadString(tc.player[i].position);
-						ffile.ReadString(str);
 
+						ffile.ReadString(str);
 						tc.player[i].x = _wtof(str);
-						ffile.ReadString(str);
 
+						ffile.ReadString(str);
 						tc.player[i].y = _wtof(str);
-						ffile.ReadString(str);
 
+						ffile.ReadString(str);
 						tc.player[i].rx = _wtof(str);
-						ffile.ReadString(str);
 
-						tc.player[i].ry = _wtof(str);
 						ffile.ReadString(str);
+						tc.player[i].ry = _wtof(str);
+
+
 					}
+
 					addToMenu(tc.name, tacticList.GetCount());
 					tacticList.AddTail(tc);
 
