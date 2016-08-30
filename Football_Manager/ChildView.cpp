@@ -1,7 +1,6 @@
 ﻿
 // ChildView.cpp : implementation of the CChildView class
 
-
 #include "stdafx.h"
 #include "Football_Manager.h"
 #include "ChildView.h"
@@ -62,6 +61,7 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 	// see large comment in previous function
 	mouseButtonPress = false;
 	if ((GetKeyState(VK_LBUTTON) & 0x100) != 0) {
+		
 		mouseP.x = point.x;
 		mouseP.y = point.y;
 		mouseButtonPress = true;
@@ -81,8 +81,9 @@ void CChildView::OnSize(UINT nType, int cx, int cy)
 
 void CChildView::InitPlayers442() {
 	//int out = 20;
-	//CRect rct;
+	//CRect rect;
 	GetClientRect(&rect);
+	
 	players[0].position = _T("GK");
 	players[1].position = _T("DL");
 	players[2].position = _T("DR");
@@ -134,8 +135,7 @@ void CChildView::OnPaint()
 	
 	CPaintDC dc(this); // device context for painting
 	// TODO: Add your message handler code here
-	//int out = 20;
-	//CRect rct;
+	
 	GetClientRect(&rct);
 	CDC* dcc = this->GetDC();//get window
 	CBrush brushGreen(RGB(0, 128, 0));//brush
@@ -175,22 +175,27 @@ void CChildView::OnPaint()
 	dcc->LineTo(rct.right / 30 * 29, rct.bottom / 10 * 4);
 	dcc->LineTo(rct.right / 30 * 29, rct.bottom / 10 * 6);
 	dcc->LineTo(rct.right - out, rct.bottom / 10 * 6);
+
 	//crtanje lijevog šesnajsterca
 	dcc->MoveTo(out, rct.bottom / 10 * 2);
 	dcc->LineTo(out + rct.right / 8, rct.bottom / 10 * 2);
 	dcc->LineTo(out + rct.right / 8, rct.bottom / 10 * 8);
 	dcc->LineTo(out, rct.bottom / 10 * 8);
+
 	//crtanje desnog šesnajsterca
 	dcc->MoveTo(rct.right - out, rct.bottom / 10 * 2);
 	dcc->LineTo(rct.right / 8 * 7 - out, rct.bottom / 10 * 2);
 	dcc->LineTo(rct.right / 8 * 7 - out, rct.bottom / 10 * 8);
 	dcc->LineTo(rct.right - out, rct.bottom / 10 * 8);
+
 	//lijeva tocka za penal
 	dcc->MoveTo(rct.right / 30 * 3, rct.bottom / 2);
 	dcc->LineTo(rct.right / 30 * 3, rct.bottom / 2);
+
 	//desna tocka za penal
 	dcc->MoveTo(rct.right / 30 * 28 - out, rct.bottom / 2);
 	dcc->LineTo(rct.right / 30 * 28 - out, rct.bottom / 2);
+
 	// TODO: Add your message handler code here
 
 	// Do not call CWnd::OnPaint() for painting messages
@@ -198,6 +203,10 @@ void CChildView::OnPaint()
 
 	//crtanje igraca na terenu!!
 	for (int i = 0; i < 11; i++) {
+
+		
+
+
 		//calc relative
 		players[i].x = rct.Width() * players[i].rx;
 		players[i].y = rct.Height() * players[i].ry;
@@ -218,51 +227,74 @@ void CChildView::OnPaint()
 					}
 				}
 
-		if (players[i].x <= rct.Width() / 7)
-		{
-			players[i].position = _T("GK");
-		}
-		else if (players[i].x >= rct.Width() / 7 && players[i].x <= rct.Width() / 7 * 2) {
+		if (players[i].x < out) //ne daj igracima izvan terena
+			players[i].x = out;
 
-			players[i].position = _T("CB");
-			if (players[i].y <= rct.Height() / 5)
-				players[i].position = _T("DL");
-			if (players[i].y >= rct.Height() / 5 * 4)
-				players[i].position = _T("DR");
-		}
-		else if (players[i].x >= rct.Width() / 7 * 2 && players[i].x <= rct.Width() / 7 * 4) {
+		else if (players[i].x > rct.Width() - out)
+			players[i].x = rct.Width() - 2* out;
 
-			players[i].position = _T("MC");
-			if (players[i].y <= rct.Height() / 5)
-				players[i].position = _T("ML");
-			if (players[i].y >= rct.Height() / 5 * 4)
-				players[i].position = _T("MR");
-		}
-		else if (players[i].x >= rct.Width() / 7 * 4 && players[i].x <= rct.Width() / 7 * 5) {
-			players[i].position = _T("AMC");
-			if (players[i].y <= rct.Height() / 5 * 2)
-				players[i].position = _T("AML");
-			if (players[i].y >= rct.Height() / 5 * 3)
-				players[i].position = _T("AMR");
-		}
+		else if (players[i].y < out)
+			players[i].y = out;
 
-		//else if (players[i].x >= rct.Width() / 7 * 6) {
-		else{
-			players[i].position = _T("FC");
-			if (players[i].y <= rct.Height() / 5 )
-				players[i].position = _T("LFC");
-			if (players[i].y >= rct.Height() / 5 * 4)
-				players[i].position = _T("RFC");
+		else if (players[i].y > rct.Height() - out)
+			players[i].y = rct.Height() - 2 * out;
+		
+		
 
+			if (players[i].x <= rct.Width() / 7) {//Postavi golmana
+
+				for (int j = 0; j < 11; j++) {
+					if (players[j].position == _T("GK"))
+						break;
+					if (j == 10)
+						players[i].position = _T("GK");
+
+				}
+
+			}
+
+			else if (players[i].x >= rct.Width() / 7 && players[i].x <= rct.Width() / 7 * 2) {
+
+				players[i].position = _T("CB");
+				if (players[i].y <= rct.Height() / 5 )
+					players[i].position = _T("DL");
+				if (players[i].y >= rct.Height() / 5 * 4 )
+					players[i].position = _T("DR");
+			}
+
+			else if (players[i].x >= rct.Width() / 7 * 2 && players[i].x <= rct.Width() / 7 * 4) {
+
+				players[i].position = _T("MC");
+				if (players[i].y <= rct.Height() / 5)
+					players[i].position = _T("ML");
+				if (players[i].y >= rct.Height() / 5 * 4)
+					players[i].position = _T("MR");
+			}
+
+			else if (players[i].x >= rct.Width() / 7 * 4 && players[i].x <= rct.Width() / 7 * 5) {
+				players[i].position = _T("AMC");
+				if (players[i].y <= rct.Height() / 5 * 2)
+					players[i].position = _T("AML");
+				if (players[i].y >= rct.Height() / 5 * 3)
+					players[i].position = _T("AMR");
+			}
+
+			//else if (players[i].x >= rct.Width() / 7 * 6) {
+			else {
+				players[i].position = _T("FC");
+				if (players[i].y <= rct.Height() / 5)
+					players[i].position = _T("LFC");
+				if (players[i].y >= rct.Height() / 5 * 4)
+					players[i].position = _T("RFC");
+
+			}
+
+			dcc->SetTextAlign(TA_LEFT);
+			dcc->SetBkMode(TMT_TRANSPARENT);
+			dcc->TextOutW(players[i].x, players[i].y, players[i].position);
+			// Do not call CWnd::OnPaint() for painting messages
 		}
-	
-		dcc->SetTextAlign(TA_LEFT);
-		dcc->SetBkMode(TMT_TRANSPARENT);
-		dcc->TextOutW(players[i].x, players[i].y , players[i].position);
-		// Do not call CWnd::OnPaint() for painting messages
 	}
-	
-}
 
 
 	void CChildView::OnTactic442()
@@ -373,7 +405,7 @@ void CChildView::OnPaint()
 				{
 					for (int i = 0; i < 11; i++) {
 					
-						ffile.ReadString(tc.player[i].position);
+						ffile.ReadString(tc.player[i].position);//pozicija igraca
 
 						ffile.ReadString(str);
 						tc.player[i].x = _wtof(str);
@@ -421,6 +453,7 @@ void CChildView::OnPaint()
 			SaveTactic();
 		}
 	}
+
 
 	void CChildView::OnMenuClick(UINT nID)
 	{
