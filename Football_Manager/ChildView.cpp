@@ -164,13 +164,13 @@ void CChildView::OnPaint()
 	dcc->MoveTo((rct.right - out + out) / 2, out);
 	dcc->LineTo((rct.right - out + out) / 2, rct.bottom - out);
 
-	//crtanje lijevog gola
+	//crtanje lijevog prostora gola
 	dcc->MoveTo(out, rct.bottom / 10 * 4);
 	dcc->LineTo(out + rct.right / 30, rct.bottom / 10 * 4);
 	dcc->LineTo(out + rct.right / 30, rct.bottom / 10 * 6);
 	dcc->LineTo(out, rct.bottom / 10 * 6);
 
-	//crtanje desnog gola
+	//crtanje desnog prostora za gol
 	dcc->MoveTo(rct.right - out, rct.bottom / 10 * 4);
 	dcc->LineTo(rct.right / 30 * 29, rct.bottom / 10 * 4);
 	dcc->LineTo(rct.right / 30 * 29, rct.bottom / 10 * 6);
@@ -195,6 +195,23 @@ void CChildView::OnPaint()
 	//desna tocka za penal
 	dcc->MoveTo(rct.right / 30 * 28 - out, rct.bottom / 2);
 	dcc->LineTo(rct.right / 30 * 28 - out, rct.bottom / 2);
+
+	//lijevi gol
+	dcc->MoveTo(out, rct.bottom / 18 * 8);
+	dcc->LineTo(out / 2, rct.bottom / 18 * 8);
+	dcc->LineTo(out / 2, rct.bottom / 18 * 10);
+	dcc->LineTo(out, rct.bottom / 18 * 10);
+
+	//desni gol
+	dcc->MoveTo(rct.Width() - out, rct.bottom / 18 * 8);
+	dcc->LineTo(rct.Width() - out / 2, rct.bottom / 18 * 8);
+	dcc->LineTo(rct.Width() - out / 2, rct.bottom / 18 * 10);
+	dcc->LineTo(rct.Width() - out, rct.bottom / 18 * 10);
+
+	//crtanje lijevog polukruga
+	//                    left        top   right           bottom
+	// dcc->Ellipse(0 , 0 , rct.bottom / 10 * 2, rct.bottom / 10 * 8);
+
 
 	// TODO: Add your message handler code here
 
@@ -288,12 +305,16 @@ void CChildView::OnPaint()
 					players[i].position = _T("RFC");
 
 			}
-
+			
 			dcc->SetTextAlign(TA_LEFT);
 			dcc->SetBkMode(TMT_TRANSPARENT);
 			dcc->TextOutW(players[i].x, players[i].y, players[i].position);
 			// Do not call CWnd::OnPaint() for painting messages
 		}
+
+	DeleteObject(brushGreen);
+	DeleteObject(newPen);
+
 	}
 
 
@@ -440,6 +461,14 @@ void CChildView::OnPaint()
 		askDialog dialog;
 		if (dialog.DoModal() == IDOK)
 		{
+			for (int j = 0; j < 11; j++) {//Set GK
+				if (players[j].position == _T("GK"))
+					break;
+				if (j == 10) {
+					MessageBox(_T("Set GK"), _T("Fault"), MB_OK);
+					return;
+				}
+			}
 			Tactic tak;
 			tak.name=dialog.EditValue;
 			for (int i = 0; i < 11; i++) {

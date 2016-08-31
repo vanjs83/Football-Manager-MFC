@@ -24,6 +24,7 @@ public:
 	BOOL mouseButtonPress;
 	BOOL init=false;
 	CRect rct, rect;
+
 // Operations
 public:
 	void InitPlayers442();

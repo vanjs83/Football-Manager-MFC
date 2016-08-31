@@ -44,7 +44,7 @@ void askDialog::OnBnClickedOk()
 	// TODO: Add your control notification handler code here
 
 	GetDlgItemText(IDC_EDIT1,EditValue);
-	if (EditValue==_T("")) {
+	if (EditValue == _T("")) {
 		MessageBox(_T("Write tactic"), _T("Fault"), MB_OK);
 		return;
 	}
