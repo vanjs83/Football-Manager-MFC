@@ -18,7 +18,8 @@ public:
 	Tactic currentTactic;
 // Attributes
 public:
-
+	CFont *fontL = NULL;
+	COLORREF col = RGB(0, 0, 0);
 	int tactic = 1;
 	int out = 20;
 	Player players[11];
@@ -27,13 +28,13 @@ public:
 	BOOL init=false;
 	CRect rct, rect;
 	BOOL gk = false;
-	LOGFONT lf ; COLORREF col;
+	
 // Operations
 public:
 	void InitPlayers442();
 	void addToMenu(CString name, int id);
 	void SaveTactic();
-	bool GetFont(LOGFONT & lf, COLORREF & col);
+	bool GetFont();
 	void RemoveMenu(CString name);
 	void deleteTactic(Tactic tak);
 // Overrides

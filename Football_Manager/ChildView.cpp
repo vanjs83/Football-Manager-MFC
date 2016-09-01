@@ -303,16 +303,21 @@ void CChildView::OnPaint()
 					gk = true;
 				}
 			}
+
+			if (!fontL)fontL = dcc->GetCurrentFont();
+			CFont* def_font = dcc->SelectObject(fontL);
 			
+			dcc->SetTextColor(col);
 			dcc->SetTextAlign(TA_LEFT);
 			dcc->SetBkMode(TMT_TRANSPARENT);
 			dcc->TextOutW(currentTactic.player[i].x, currentTactic.player[i].y, currentTactic.player[i].position);
+			dcc->SelectObject(def_font);
 			// Do not call CWnd::OnPaint() for painting messages
 		}
 
 	DeleteObject(brushGreen);
 	DeleteObject(newPen);
-
+	DeleteObject(fontL);
 	}
 
 
@@ -452,17 +457,14 @@ void CChildView::OnPaint()
 		}
 	}
 	
-	bool CChildView::GetFont(LOGFONT &lf, COLORREF &col) {
+	bool CChildView::GetFont() {
 	
-
-		CHOOSEFONT cf;
-		ZeroMemory(&cf, sizeof cf);
-		cf.lStructSize = sizeof cf;
-		cf.Flags = CF_INITTOLOGFONTSTRUCT | CF_SCREENFONTS | CF_EFFECTS;
-		cf.lpLogFont = &lf;
-		cf.rgbColors = col;
-		if (ChooseFont(&cf)) {
-			col = cf.rgbColors;
+		CFontDialog dlg;
+		if (dlg.DoModal() == IDOK)
+		{
+			fontL->DeleteObject();
+			fontL->CreateFontIndirect(dlg.m_cf.lpLogFont);
+			col = dlg.GetColor();
 			return true;
 		}
 		return false;
@@ -515,8 +517,11 @@ void CChildView::OnPaint()
 	void CChildView::SettingsFont()
 	{
 		// TODO: Add your command handler code here
-		GetFont(lf,col);
-		InvalidateRect(NULL,true);
+		if (GetFont())
+		{
+			InvalidateRect(NULL, true);
+			UpdateWindow();
+		}
 	}
 
 
