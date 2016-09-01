@@ -45,7 +45,7 @@ void askDialog::OnBnClickedOk()
 
 	GetDlgItemText(IDC_EDIT1,EditValue);
 	if (EditValue == _T("")) {
-		MessageBox(_T("Write tactic"), _T("Fault"), MB_OK);
+		MessageBox(_T("Write tactic!!"), _T("Fault!!"), MB_OK);
 		return;
 	}
 

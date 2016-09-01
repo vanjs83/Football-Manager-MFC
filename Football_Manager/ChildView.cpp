@@ -32,6 +32,8 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_ERASEBKGND()
 	ON_COMMAND(ID_TACTIC_4, &CChildView::OnTactic442)
 	ON_COMMAND(ID_OPTIONS_SAVETACTIC, &CChildView::OnOptionsSavetactic)
+	ON_COMMAND(ID_SETTINGS_FONT, &CChildView::SettingsFont)
+	ON_COMMAND(ID_OPTIONS_DELETETACTIC32798, &CChildView::OnOptionsDeletetactic)
 END_MESSAGE_MAP()
 
 
@@ -83,53 +85,54 @@ void CChildView::InitPlayers442() {
 	//int out = 20;
 	//CRect rect;
 	GetClientRect(&rect);
-	
-	players[0].position = _T("GK");
-	players[1].position = _T("DL");
-	players[2].position = _T("DR");
-	players[3].position = _T("CB");
-	players[4].position = _T("CB");
-	players[5].position = _T("MR");
-	players[6].position = _T("ML");
-	players[7].position = _T("MC");
-	players[8].position = _T("MC");
-	players[9].position = _T("FC");
-	players[10].position = _T("FC");
+	currentTactic.name = _T("4:4:2");
+	currentTactic.player[0].position = _T("GK");
+	currentTactic.player[1].position = _T("DL");
+	currentTactic.player[2].position = _T("DR");
+	currentTactic.player[3].position = _T("CB");
+	currentTactic.player[4].position = _T("CB");
+	currentTactic.player[5].position = _T("MR");
+	currentTactic.player[6].position = _T("ML");
+	currentTactic.player[7].position = _T("MC");
+	currentTactic.player[8].position = _T("MC");
+	currentTactic.player[9].position = _T("FC");
+	currentTactic.player[10].position = _T("FC");
 	//
 	//crtanje obrane
-	players[0].x = out;//gk
-	players[0].y = rect.Height() / 2 - out;
-	players[1].x = rect.Width() / 4;//DR
-	players[1].y = rect.Height() / 5 * 4;
-	players[2].x = rect.Width() / 4;//DL
-	players[2].y = rect.Height() / 5;
-	players[3].x = rect.Width() / 4;//CB
-	players[3].y = rect.Height() / 5 * 2;
-	players[4].x = rect.Width() / 4;//CB
-	players[4].y = rect.Height() / 5 * 3;
+	currentTactic.player[0].x = out;//gk
+	currentTactic.player[0].y = rect.Height() / 2 - out;
+	currentTactic.player[1].x = rect.Width() / 4;//DR
+	currentTactic.player[1].y = rect.Height() / 5 * 4;
+	currentTactic.player[2].x = rect.Width() / 4;//DL
+	currentTactic.player[2].y = rect.Height() / 5;
+	currentTactic.player[3].x = rect.Width() / 4;//CB
+	currentTactic.player[3].y = rect.Height() / 5 * 2;
+	currentTactic.player[4].x = rect.Width() / 4;//CB
+	currentTactic.player[4].y = rect.Height() / 5 * 3;
 	//crtanje veze
-	players[5].x = rect.Width() / 4 * 2;//MR
-	players[5].y = rect.Height() / 5 * 4;
-	players[6].x = rect.Width() / 4 * 2;//ML
-	players[6].y = rect.Height() / 5;
-	players[7].x = rect.Width() / 4 * 2;//MC
-	players[7].y = rect.Height() / 5 * 2;
-	players[8].x = rect.Width() / 4 * 2;//MC
-	players[8].y = rect.Height() / 5 * 3;
+	currentTactic.player[5].x = rect.Width() / 4 * 2;//MR
+	currentTactic.player[5].y = rect.Height() / 5 * 4;
+	currentTactic.player[6].x = rect.Width() / 4 * 2;//ML
+	currentTactic.player[6].y = rect.Height() / 5;
+	currentTactic.player[7].x = rect.Width() / 4 * 2;//MC
+	currentTactic.player[7].y = rect.Height() / 5 * 2;
+	currentTactic.player[8].x = rect.Width() / 4 * 2;//MC
+	currentTactic.player[8].y = rect.Height() / 5 * 3;
 	//crtanje napada
-	players[9].x = rect.Width() / 4 * 3;//FC
-	players[9].y = rect.Height() / 5 * 2;
-	players[10].x = rect.Width() / 4 * 3;//FC
-	players[10].y = rect.Height() / 5 * 3;
+	currentTactic.player[9].x = rect.Width() / 4 * 3;//FC
+	currentTactic.player[9].y = rect.Height() / 5 * 2;
+	currentTactic.player[10].x = rect.Width() / 4 * 3;//FC
+	currentTactic.player[10].y = rect.Height() / 5 * 3;
+
 	// relative rx, ry
 	for (int i = 0; i < 11; i++) {
-		players[i].rx = players[i].x / rect.Width();
-		players[i].ry = players[i].y / rect.Height();
+		currentTactic.player[i].rx = currentTactic.player[i].x / rect.Width();
+		currentTactic.player[i].ry = currentTactic.player[i].y / rect.Height();
 	}
 
 }
 
-
+  
 void CChildView::OnPaint()
 {  
 	
@@ -144,7 +147,10 @@ void CChildView::OnPaint()
 
 	CPen* newPen = new CPen(PS_SOLID | PS_GEOMETRIC, 3, RGB(255, 255, 255));
 	CPen* pOldPen = dcc->SelectObject(newPen);//select pen
-											  
+	
+
+		
+
     //crtanje okvira
 	dcc->MoveTo(out, out); //krajnja točka
 	dcc->LineTo(out, rct.bottom - out);//početna točka
@@ -208,107 +214,99 @@ void CChildView::OnPaint()
 	dcc->LineTo(rct.Width() - out / 2, rct.bottom / 18 * 10);
 	dcc->LineTo(rct.Width() - out, rct.bottom / 18 * 10);
 
-	//crtanje lijevog polukruga
-	//                    left        top   right           bottom
-	// dcc->Ellipse(0 , 0 , rct.bottom / 10 * 2, rct.bottom / 10 * 8);
-
-
+	
 	// TODO: Add your message handler code here
 
 	// Do not call CWnd::OnPaint() for painting messages
 	BOOL b = false;
-
+	     gk = false;
 	//crtanje igraca na terenu!!
+	
 	for (int i = 0; i < 11; i++) {
 
-		
-
-
 		//calc relative
-		players[i].x = rct.Width() * players[i].rx;
-		players[i].y = rct.Height() * players[i].ry;
+		currentTactic.player[i].x = rct.Width() * currentTactic.player[i].rx;
+		currentTactic.player[i].y = rct.Height() * currentTactic.player[i].ry;
 		//
 		if (mouseButtonPress)
-			if (mouseP.x + out >= players[i].x && mouseP.x <= players[i].x + out)
-				if (mouseP.y + out >= players[i].y && mouseP.y <= players[i].y + out)
+			if (mouseP.x + out >= currentTactic.player[i].x && mouseP.x <= currentTactic.player[i].x + out)
+				if (mouseP.y + out >= currentTactic.player[i].y && mouseP.y <= currentTactic.player[i].y + out)
 				{
 					if (!b)
 					{
-						players[i].x = mouseP.x;
-						players[i].y = mouseP.y;
-						players[i].rx = players[i].x / rct.Width();
-						players[i].ry = players[i].y / rct.Height();
+						currentTactic.player[i].x = mouseP.x;
+						currentTactic.player[i].y = mouseP.y;
+						currentTactic.player[i].rx = currentTactic.player[i].x / rct.Width();
+						currentTactic.player[i].ry = currentTactic.player[i].y / rct.Height();
 						//
 						init = true;
 						b = true;
 					}
 				}
 
-		if (players[i].x < out) //ne daj igracima izvan terena
-			players[i].x = out;
+		if (currentTactic.player[i].x < out) //ne daj igracima izvan terena
+			currentTactic.player[i].x = out;
 
-		else if (players[i].x > rct.Width() - out)
-			players[i].x = rct.Width() - 2* out;
+		else if (currentTactic.player[i].x > rct.Width() - out)
+			currentTactic.player[i].x = rct.Width() - 2* out;
 
-		else if (players[i].y < out)
-			players[i].y = out;
+		else if (currentTactic.player[i].y < out)
+			currentTactic.player[i].y = out;
 
-		else if (players[i].y > rct.Height() - out)
-			players[i].y = rct.Height() - 2 * out;
+		else if (currentTactic.player[i].y > rct.Height() - out)
+			currentTactic.player[i].y = rct.Height() - 2 * out;
 		
 		
+		
+		        //CB
+			 if (currentTactic.player[i].x >= rct.Width() / 7 && currentTactic.player[i].x <= rct.Width() / 7 * 2 ) {
 
-			if (players[i].x <= rct.Width() / 7) {//Postavi golmana
+				currentTactic.player[i].position = _T("CB");
+				if (currentTactic.player[i].y <= rct.Height() / 5 )
+					currentTactic.player[i].position = _T("DL");
+				if (currentTactic.player[i].y >= rct.Height() / 5 * 4 )
+					currentTactic.player[i].position = _T("DR");
+			}
+			 //MC
+			else if (currentTactic.player[i].x >= rct.Width() / 7 * 2 && currentTactic.player[i].x <= rct.Width() / 7 * 4) {
 
-				for (int j = 0; j < 11; j++) {
-					if (players[j].position == _T("GK"))
-						break;
-					if (j == 10)
-						players[i].position = _T("GK");
+				currentTactic.player[i].position = _T("MC");
+				if (currentTactic.player[i].y <= rct.Height() / 5)
+					currentTactic.player[i].position = _T("ML");
+				if (currentTactic.player[i].y >= rct.Height() / 5 * 4)
+					currentTactic.player[i].position = _T("MR");
+			}
+			//AMF
+			else if (currentTactic.player[i].x >= rct.Width() / 7 * 4 && currentTactic.player[i].x <= rct.Width() / 7 * 5) {
+				currentTactic.player[i].position = _T("AMC");
+				if (currentTactic.player[i].y <= rct.Height() / 5 * 2)
+					currentTactic.player[i].position = _T("AML");
+				if (currentTactic.player[i].y >= rct.Height() / 5 * 3)
+					currentTactic.player[i].position = _T("AMR");
+			}
+			//FC
+			else if (currentTactic.player[i].x >= rct.Width() / 7 * 5) {
+		 
+				currentTactic.player[i].position = _T("FC");
+				if (currentTactic.player[i].y <= rct.Height() / 5)
+					currentTactic.player[i].position = _T("LFC");
+				if (currentTactic.player[i].y >= rct.Height() / 5 * 4)
+					currentTactic.player[i].position = _T("RFC");
 
+			}
+			//GK
+			if (currentTactic.player[i].x <= rct.Width() / 7)
+			{
+				if (!gk)
+				{
+					currentTactic.player[i].position = _T("GK");
+					gk = true;
 				}
-
-			}
-
-			else if (players[i].x >= rct.Width() / 7 && players[i].x <= rct.Width() / 7 * 2) {
-
-				players[i].position = _T("CB");
-				if (players[i].y <= rct.Height() / 5 )
-					players[i].position = _T("DL");
-				if (players[i].y >= rct.Height() / 5 * 4 )
-					players[i].position = _T("DR");
-			}
-
-			else if (players[i].x >= rct.Width() / 7 * 2 && players[i].x <= rct.Width() / 7 * 4) {
-
-				players[i].position = _T("MC");
-				if (players[i].y <= rct.Height() / 5)
-					players[i].position = _T("ML");
-				if (players[i].y >= rct.Height() / 5 * 4)
-					players[i].position = _T("MR");
-			}
-
-			else if (players[i].x >= rct.Width() / 7 * 4 && players[i].x <= rct.Width() / 7 * 5) {
-				players[i].position = _T("AMC");
-				if (players[i].y <= rct.Height() / 5 * 2)
-					players[i].position = _T("AML");
-				if (players[i].y >= rct.Height() / 5 * 3)
-					players[i].position = _T("AMR");
-			}
-
-			//else if (players[i].x >= rct.Width() / 7 * 6) {
-			else {
-				players[i].position = _T("FC");
-				if (players[i].y <= rct.Height() / 5)
-					players[i].position = _T("LFC");
-				if (players[i].y >= rct.Height() / 5 * 4)
-					players[i].position = _T("RFC");
-
 			}
 			
 			dcc->SetTextAlign(TA_LEFT);
 			dcc->SetBkMode(TMT_TRANSPARENT);
-			dcc->TextOutW(players[i].x, players[i].y, players[i].position);
+			dcc->TextOutW(currentTactic.player[i].x, currentTactic.player[i].y, currentTactic.player[i].position);
 			// Do not call CWnd::OnPaint() for painting messages
 		}
 
@@ -368,6 +366,8 @@ void CChildView::OnPaint()
 			}
 		}
 	}
+
+
 
 
 
@@ -452,34 +452,44 @@ void CChildView::OnPaint()
 		}
 	}
 	
+	bool CChildView::GetFont(LOGFONT &lf, COLORREF &col) {
+	
+
+		CHOOSEFONT cf;
+		ZeroMemory(&cf, sizeof cf);
+		cf.lStructSize = sizeof cf;
+		cf.Flags = CF_INITTOLOGFONTSTRUCT | CF_SCREENFONTS | CF_EFFECTS;
+		cf.lpLogFont = &lf;
+		cf.rgbColors = col;
+		if (ChooseFont(&cf)) {
+			col = cf.rgbColors;
+			return true;
+		}
+		return false;
+	}
+
+
 
 
 
 	void CChildView::OnOptionsSavetactic()
 	{
+	    
 		// TODO: Add your command handler code here
 		askDialog dialog;
 		if (dialog.DoModal() == IDOK)
 		{
-			for (int j = 0; j < 11; j++) {//Set GK
-				if (players[j].position == _T("GK"))
-					break;
-				if (j == 10) {
-					MessageBox(_T("Set GK"), _T("Fault"), MB_OK);
+
+				if (!gk) {
+					MessageBox(_T("Set GK!!"), _T("Fault!!"), MB_OK);
 					return;
 				}
-			}
-			Tactic tak;
+
+			Tactic tak=currentTactic;
 			tak.name=dialog.EditValue;
-			for (int i = 0; i < 11; i++) {
-				// relative rx, ry
-				players[i].rx = players[i].x / rct.Width();
-				players[i].ry = players[i].y / rct.Height();
-				tak.player[i] = players[i];
-			}
-			addToMenu(tak.name, tacticList.GetCount());
-			tacticList.AddTail(tak);
-			SaveTactic();
+			     addToMenu(tak.name, tacticList.GetCount());
+			       tacticList.AddTail(tak);
+			         SaveTactic();
 		}
 	}
 
@@ -493,14 +503,57 @@ void CChildView::OnPaint()
 			Tactic tak = tacticList.GetNext(takListPos);
 			if (nID == id)
 			{
-				for (int i = 0; i < 11; i++) {
-					players[i] = tak.player[i];
-			
-				}
+				currentTactic = tak;
 				Invalidate();
 				UpdateWindow();
 				return;
-			}
+				}
 			id++;
 		}
+	}
+
+	void CChildView::SettingsFont()
+	{
+		// TODO: Add your command handler code here
+		GetFont(lf,col);
+		InvalidateRect(NULL,true);
+	}
+
+
+	void CChildView::RemoveMenu(CString name)
+	{
+
+		// Get the menu from the application window.
+		CMenu* mmenu = AfxGetMainWnd()->GetMenu();
+		int pos = FindMenuItem(mmenu, _T("Tactic"));
+		CMenu* submenu = mmenu->GetSubMenu(pos);
+		int pos2 = FindMenuItem(submenu, name);
+		if (pos2 == -1)return;
+		submenu->RemoveMenu(pos2, MF_BYPOSITION);
+	}
+
+	void CChildView::deleteTactic(Tactic tak)
+	{
+		// TODO: Add your command handler code here
+		for (int i = 0; i < tacticList.GetCount(); i++)
+		{
+			POSITION takListPos = tacticList.FindIndex(i);
+			Tactic tak0 = tacticList.GetAt(takListPos);
+			if (tak0.name == tak.name)
+			{
+				tacticList.RemoveAt(takListPos);
+				RemoveMenu(tak.name);
+				SaveTactic();
+				break;
+			}
+		}
+	}
+
+	void CChildView::OnOptionsDeletetactic()
+	{
+		// TODO: Add your command handler code here
+		if (MessageBox(_T("Do you whish to delete current tactic?"), _T("Question"), MB_YESNO | MB_ICONQUESTION) == IDYES)
+		        deleteTactic(currentTactic);
+
+
 	}

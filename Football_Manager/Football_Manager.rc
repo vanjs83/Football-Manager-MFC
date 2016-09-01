@@ -207,6 +207,11 @@ BEGIN
     POPUP "Options"
     BEGIN
         MENUITEM "Save tactic",                 ID_OPTIONS_SAVETACTIC
+        MENUITEM "Delete tactic",               ID_OPTIONS_DELETETACTIC32798
+    END
+    POPUP "Settings"
+    BEGIN
+        MENUITEM "Font",                        ID_SETTINGS_FONT
     END
 END
 

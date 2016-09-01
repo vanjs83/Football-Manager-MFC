@@ -15,8 +15,10 @@ class CChildView : public CWnd
 public:
 	CChildView();
 	CList<Tactic, Tactic>tacticList;
+	Tactic currentTactic;
 // Attributes
 public:
+
 	int tactic = 1;
 	int out = 20;
 	Player players[11];
@@ -24,16 +26,20 @@ public:
 	BOOL mouseButtonPress;
 	BOOL init=false;
 	CRect rct, rect;
-
+	BOOL gk = false;
+	LOGFONT lf ; COLORREF col;
 // Operations
 public:
 	void InitPlayers442();
 	void addToMenu(CString name, int id);
 	void SaveTactic();
+	bool GetFont(LOGFONT & lf, COLORREF & col);
+	void RemoveMenu(CString name);
+	void deleteTactic(Tactic tak);
 // Overrides
 	protected:
 	
-		virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void ReadTaktike();
 // Implementation
 public:
@@ -48,10 +54,15 @@ protected:
 	afx_msg void OnMouseMove(UINT flags, CPoint point);
 	afx_msg void OnTactic442();
 	afx_msg void OnOptionsSavetactic();
+	afx_msg void SettingsFont();
+	afx_msg void OnOptionsDeletetactic();
 	DECLARE_MESSAGE_MAP()
 public:
 	
 	
 
+
+	
 };
+
 
