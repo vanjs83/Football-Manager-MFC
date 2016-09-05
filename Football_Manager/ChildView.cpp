@@ -76,16 +76,16 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 			currentTactic.player[pIndex].y = rct.Height() * currentTactic.player[pIndex].ry;
 
 			//
-			if (currentTactic.player[pIndex].x < out) //ne daj igracima izvan terena
-				currentTactic.player[pIndex].x = out;
+			if (currentTactic.player[pIndex].x <= out) //ne daj igracima izvan terena
+				currentTactic.player[pIndex].x =  out;
 
-			else if (currentTactic.player[pIndex].x > rct.Width() - out)
+			else if (currentTactic.player[pIndex].x >= rct.Width() - out)
 				currentTactic.player[pIndex].x = rct.Width() - 2 * out;
 
-			else if (currentTactic.player[pIndex].y < out)
-				currentTactic.player[pIndex].y = out;
+			else if (currentTactic.player[pIndex].y <= out)
+				currentTactic.player[pIndex].y =  out;
 
-			else if (currentTactic.player[pIndex].y > rct.Height() - out)
+			else if (currentTactic.player[pIndex].y >= rct.Height() - out)
 				currentTactic.player[pIndex].y = rct.Height() - 2 * out;
 
 			else if (currentTactic.player[pIndex].x >= rct.Width() / 7 && currentTactic.player[pIndex].x <= rct.Width() / 7 * 2) 
@@ -391,10 +391,7 @@ DeleteObject(newPen);//delete pen tool
 
 						str.Format(L"%s\n", tak.player[i].position);
 						ffile.WriteString(str);
-						str.Format(L"%g\n", tak.player[i].x);
-						ffile.WriteString(str);
-						str.Format(L"%g\n", tak.player[i].y);
-						ffile.WriteString(str);
+
 						str.Format(L"%g\n", tak.player[i].rx);
 						ffile.WriteString(str);
 						str.Format(L"%g\n", tak.player[i].ry);
@@ -467,11 +464,6 @@ DeleteObject(newPen);//delete pen tool
 					
 						ffile.ReadString(tc.player[i].position);//pozicija igraca
 
-						ffile.ReadString(str);
-						tc.player[i].x = _wtof(str);
-
-						ffile.ReadString(str);
-						tc.player[i].y = _wtof(str);
 
 						ffile.ReadString(str);
 						tc.player[i].rx = _wtof(str);
@@ -498,7 +490,7 @@ DeleteObject(newPen);//delete pen tool
 		{
 			fontL = new CFont;
 			fontL->CreateFont(dlg.m_cf.lpLogFont->lfHeight, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, dlg.m_cf.lpLogFont->lfFaceName);
-			// fontL->CreateFontIndirect(dlg.m_cf.lpLogFont);
+			
 			col = dlg.GetColor();
 			DeleteObject(fontL);
 			return true;
