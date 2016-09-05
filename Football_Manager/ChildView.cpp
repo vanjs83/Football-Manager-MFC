@@ -74,6 +74,7 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 			//calc relative
 			currentTactic.player[pIndex].x = rct.Width() * currentTactic.player[pIndex].rx;
 			currentTactic.player[pIndex].y = rct.Height() * currentTactic.player[pIndex].ry;
+
 			//
 			if (currentTactic.player[pIndex].x < out) //ne daj igracima izvan terena
 				currentTactic.player[pIndex].x = out;
@@ -87,8 +88,8 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 			else if (currentTactic.player[pIndex].y > rct.Height() - out)
 				currentTactic.player[pIndex].y = rct.Height() - 2 * out;
 
-			else if (currentTactic.player[pIndex].x >= rct.Width() / 7 && currentTactic.player[pIndex].x <= rct.Width() / 7 * 2) {
-
+			else if (currentTactic.player[pIndex].x >= rct.Width() / 7 && currentTactic.player[pIndex].x <= rct.Width() / 7 * 2) 
+			{
 				currentTactic.player[pIndex].position = _T("CB");
 				if (currentTactic.player[pIndex].y <= rct.Height() / 5)
 					currentTactic.player[pIndex].position = _T("DL");
@@ -113,8 +114,7 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 					currentTactic.player[pIndex].position = _T("AMR");
 			}
 
-			
-			else {
+			else if(currentTactic.player[pIndex].x >= rct.Width() / 7 * 5) {
 				currentTactic.player[pIndex].position = _T("FC");
 				if (currentTactic.player[pIndex].y <= rct.Height() / 5)
 					currentTactic.player[pIndex].position = _T("LFC");
@@ -129,6 +129,7 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 					gk = true;
 				}
 			}
+
 			RECT rect = { currentTactic.player[pIndex].x - out, currentTactic.player[pIndex].y - out, currentTactic.player[pIndex].x + 50, currentTactic.player[pIndex].y + 50 };
 			InvalidateRect(&rect, true);
 
@@ -259,7 +260,7 @@ void CChildView::OnPaint()
 	CBrush brushGreen(RGB(0, 128, 0));//brush
     dc.SelectObject(brushGreen); //select brush tool
     dc.Rectangle(0, 0, rct.right, rct.bottom);//draw rectangle
-
+	DeleteObject(brushGreen);//delete brush tool
 	CPen* newPen = new CPen(PS_SOLID | PS_GEOMETRIC, 3, RGB(255, 255, 255));
 	CPen* pOldPen = dc.SelectObject(newPen);//select pen
 	
@@ -329,7 +330,7 @@ dc.LineTo(rct.Width() - out / 2, rct.bottom / 18 * 8);
 dc.LineTo(rct.Width() - out / 2, rct.bottom / 18 * 10);
 dc.LineTo(rct.Width() - out, rct.bottom / 18 * 10);
 
-	
+DeleteObject(newPen);//delete pen tool
 	// TODO: Add your message handler code here
 
 	// Do not call CWnd::OnPaint() for painting messages
@@ -344,18 +345,19 @@ dc.LineTo(rct.Width() - out, rct.bottom / 18 * 10);
 		dc.SetTextColor(col);
 		dc.SetTextAlign(TA_LEFT);
 		dc.SetBkMode(TRANSPARENT);
+		if (currentTactic.player[i].position == _T("GK")) gk = true;
 		dc.TextOut(currentTactic.player[i].x, currentTactic.player[i].y, currentTactic.player[i].position);
-		dc.SelectObject(def_font);
-
+	//	dc.SelectObject(def_font);
+		DeleteObject(fontL); //delete object def_font
 				}
 
+	
 	// Do not call CWnd::OnPaint() for painting messages
 		}
 
 	void CChildView::OnTactic442()
 	{
 		// TODO: Add your command handler code here
-	//	MessageBox(_T("4:4:2"),_T("Tactic"));
 		tactic =1;
 		InitPlayers442();
 		Invalidate();
