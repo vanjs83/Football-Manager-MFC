@@ -133,7 +133,7 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 			CClientDC hdc(this);
 			if (!fontL)fontL = hdc.GetCurrentFont();
 			CSize fsize = hdc.GetTextExtent(currentTactic.player[pIndex].position);
-			RECT rect = { currentTactic.player[pIndex].x - (fsize.cx  *2), currentTactic.player[pIndex].y - (fsize.cy * 2),(currentTactic.player[pIndex].x) + (fsize.cx * 2), (currentTactic.player[pIndex].y) + (fsize.cy * 2) };
+			RECT rect = { currentTactic.player[pIndex].x - (fsize.cx  *10), currentTactic.player[pIndex].y - (fsize.cy * 10),(currentTactic.player[pIndex].x) + (fsize.cx * 10), (currentTactic.player[pIndex].y) + (fsize.cy * 10) };
 			InvalidateRect(&rect, true);
 
 		}
@@ -500,6 +500,7 @@ DeleteObject(newPen);//delete pen tool
 			fontL->CreateFont(dlg.m_cf.lpLogFont->lfHeight, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, dlg.m_cf.lpLogFont->lfFaceName);
 			// fontL->CreateFontIndirect(dlg.m_cf.lpLogFont);
 			col = dlg.GetColor();
+			DeleteObject(fontL);
 			return true;
 		}
 		return false;
@@ -539,6 +540,7 @@ DeleteObject(newPen);//delete pen tool
 			if (nID == id)
 			{
 				currentTactic = tak;
+				calcPlayers();
 				Invalidate();
 				UpdateWindow();
 				return;

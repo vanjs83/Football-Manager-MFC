@@ -23,7 +23,6 @@ public:
 	int tactic = 1;
 	int out = 20;
 	POINT mouseP;
-	BOOL mouseButtonPress;
 	BOOL init=false;
 	CRect rct, rect;
 	BOOL gk = false;
