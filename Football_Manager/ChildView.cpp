@@ -129,8 +129,11 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 					gk = true;
 				}
 			}
-
-			RECT rect = { currentTactic.player[pIndex].x - out, currentTactic.player[pIndex].y - out, currentTactic.player[pIndex].x + 50, currentTactic.player[pIndex].y + 50 };
+             //RECT rect = { currentTactic.player[pIndex].x - out, currentTactic.player[pIndex].y - out, currentTactic.player[pIndex].x + 50, currentTactic.player[pIndex].y + 50 };
+			CClientDC hdc(this);
+			if (!fontL)fontL = hdc.GetCurrentFont();
+			CSize fsize = hdc.GetTextExtent(currentTactic.player[pIndex].position);
+			RECT rect = { currentTactic.player[pIndex].x - (fsize.cx  *2), currentTactic.player[pIndex].y - (fsize.cy * 2),(currentTactic.player[pIndex].x) + (fsize.cx * 2), (currentTactic.player[pIndex].y) + (fsize.cy * 2) };
 			InvalidateRect(&rect, true);
 
 		}
@@ -489,22 +492,22 @@ DeleteObject(newPen);//delete pen tool
 	}
 	
 	bool CChildView::GetFont() {
-	
+
 		CFontDialog dlg;
 		if (dlg.DoModal() == IDOK)
 		{
-			fontL->DeleteObject();
-			fontL->CreateFontIndirect(dlg.m_cf.lpLogFont);
+			fontL = new CFont;
+			fontL->CreateFont(dlg.m_cf.lpLogFont->lfHeight, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, dlg.m_cf.lpLogFont->lfFaceName);
+			// fontL->CreateFontIndirect(dlg.m_cf.lpLogFont);
 			col = dlg.GetColor();
 			return true;
 		}
 		return false;
+
+
+
+
 	}
-
-
-
-
-
 	void CChildView::OnOptionsSavetactic()
 	{
 	    
