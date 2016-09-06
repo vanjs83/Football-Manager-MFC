@@ -64,31 +64,40 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 {
 	// see large comment in previous function
 	
+
 	if ((GetKeyState(VK_LBUTTON) & 0x100) != 0) {
 		if (pIndex != -1)
 		{
+			CClientDC hdc(this);
+
+			if (!fontL)fontL = hdc.GetCurrentFont();
+			hdc.SelectObject(fontL);
+			CSize fsize = hdc.GetTextExtent(currentTactic.player[pIndex].position);
+			//
 			currentTactic.player[pIndex].x = point.x;
 			currentTactic.player[pIndex].y = point.y;
+			//
 			currentTactic.player[pIndex].rx = currentTactic.player[pIndex].x / rct.Width();
 			currentTactic.player[pIndex].ry = currentTactic.player[pIndex].y / rct.Height();
+			//
 			//calc relative
 			currentTactic.player[pIndex].x = rct.Width() * currentTactic.player[pIndex].rx;
 			currentTactic.player[pIndex].y = rct.Height() * currentTactic.player[pIndex].ry;
 
 			//
-			if (currentTactic.player[pIndex].x <= out) //ne daj igracima izvan terena
-				currentTactic.player[pIndex].x =  out;
+			if (currentTactic.player[pIndex].x < out) //ne daj igracima izvan terena
+				currentTactic.player[pIndex].x = out;
 
-			else if (currentTactic.player[pIndex].x >= rct.Width() - out)
-				currentTactic.player[pIndex].x = rct.Width() - 2 * out;
+			else if (currentTactic.player[pIndex].x > rct.Width() - out - fsize.cx)
+				currentTactic.player[pIndex].x = rct.Width() - out - fsize.cx;
 
-			else if (currentTactic.player[pIndex].y <= out)
-				currentTactic.player[pIndex].y =  out;
+			else if (currentTactic.player[pIndex].y < out)
+				currentTactic.player[pIndex].y = out;
 
-			else if (currentTactic.player[pIndex].y >= rct.Height() - out)
-				currentTactic.player[pIndex].y = rct.Height() - 2 * out;
+			else if (currentTactic.player[pIndex].y + fsize.cy > rct.Height())
+				currentTactic.player[pIndex].y = rct.Height() - out - fsize.cy;
 
-			else if (currentTactic.player[pIndex].x >= rct.Width() / 7 && currentTactic.player[pIndex].x <= rct.Width() / 7 * 2) 
+			else if (currentTactic.player[pIndex].x >= rct.Width() / 7 && currentTactic.player[pIndex].x <= rct.Width() / 7 * 2)
 			{
 				currentTactic.player[pIndex].position = _T("CB");
 				if (currentTactic.player[pIndex].y <= rct.Height() / 5)
@@ -97,7 +106,7 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 					currentTactic.player[pIndex].position = _T("DR");
 			}
 
-			else if (currentTactic.player[pIndex].x >= rct.Width() / 7 * 2  && currentTactic.player[pIndex].x <= rct.Width() / 7 *4 ) {
+			else if (currentTactic.player[pIndex].x >= rct.Width() / 7  *2 && currentTactic.player[pIndex].x <= rct.Width() / 7* 4) {
 
 				currentTactic.player[pIndex].position = _T("MC");
 				if (currentTactic.player[pIndex].y <= rct.Height() / 5)
@@ -106,7 +115,7 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 					currentTactic.player[pIndex].position = _T("MR");
 			}
 
-			else if (currentTactic.player[pIndex].x >= rct.Width() / 7 *3  && currentTactic.player[pIndex].x <= rct.Width() / 7 * 5 ) {
+			else if (currentTactic.player[pIndex].x >= rct.Width() / 7 *3 && currentTactic.player[pIndex].x <= rct.Width() / 7  *5) {
 				currentTactic.player[pIndex].position = _T("AMC");
 				if (currentTactic.player[pIndex].y <= rct.Height() / 5 * 2)
 					currentTactic.player[pIndex].position = _T("AML");
@@ -114,7 +123,7 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 					currentTactic.player[pIndex].position = _T("AMR");
 			}
 
-			else if(currentTactic.player[pIndex].x >= rct.Width() / 7 * 5) {
+			else if (currentTactic.player[pIndex].x >= rct.Width() / 7 * 5) {
 				currentTactic.player[pIndex].position = _T("FC");
 				if (currentTactic.player[pIndex].y <= rct.Height() / 5)
 					currentTactic.player[pIndex].position = _T("LFC");
@@ -129,15 +138,22 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 					gk = true;
 				}
 			}
-             //RECT rect = { currentTactic.player[pIndex].x - out, currentTactic.player[pIndex].y - out, currentTactic.player[pIndex].x + 50, currentTactic.player[pIndex].y + 50 };
-			CClientDC hdc(this);
-			if (!fontL)fontL = hdc.GetCurrentFont();
-			CSize fsize = hdc.GetTextExtent(currentTactic.player[pIndex].position);
-			RECT rect = { currentTactic.player[pIndex].x - (fsize.cx  *10), currentTactic.player[pIndex].y - (fsize.cy * 10),(currentTactic.player[pIndex].x) + (fsize.cx * 10), (currentTactic.player[pIndex].y) + (fsize.cy * 10) };
+			//
+			currentTactic.player[pIndex].rx = currentTactic.player[pIndex].x / rct.Width();
+			currentTactic.player[pIndex].ry = currentTactic.player[pIndex].y / rct.Height();
+			//
+
+			//   RECT rect = { currentTactic.player[pIndex].x - (fsize.cx  10), currentTactic.player[pIndex].y - (fsize.cy  10),(currentTactic.player[pIndex].x) + (fsize.cx  10), (currentTactic.player[pIndex].y) + (fsize.cy  10) };
+			RECT rect = { currentTactic.player[pIndex].x - (fsize.cx), currentTactic.player[pIndex].y - (fsize.cy),(currentTactic.player[pIndex].x) + (fsize.cx  *2), (currentTactic.player[pIndex].y) + (fsize.cy  *2) };
 			InvalidateRect(&rect, true);
 
 		}
 	}
+
+
+
+
+	
 }
 
 void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
@@ -192,11 +208,13 @@ void CChildView::calcPlayers()
 
 void CChildView::OnSize(UINT nType, int cx, int cy)
 {
+
+	
 	if (!init) {
 		InitPlayers442();
 	}
 	else calcPlayers();
-
+	
 }
 
 
@@ -263,13 +281,11 @@ void CChildView::OnPaint()
 	CBrush brushGreen(RGB(0, 128, 0));//brush
     dc.SelectObject(brushGreen); //select brush tool
     dc.Rectangle(0, 0, rct.right, rct.bottom);//draw rectangle
-	DeleteObject(brushGreen);//delete brush tool
+    DeleteObject(brushGreen);//delete brush tool
+
 	CPen* newPen = new CPen(PS_SOLID | PS_GEOMETRIC, 3, RGB(255, 255, 255));
 	CPen* pOldPen = dc.SelectObject(newPen);//select pen
 	
-
-		
-
     //crtanje okvira
 dc.MoveTo(out, out); //krajnja točka
 dc.LineTo(out, rct.bottom - out);//početna točka
