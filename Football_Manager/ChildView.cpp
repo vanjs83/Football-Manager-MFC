@@ -63,7 +63,6 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 void CChildView::OnMouseMove(UINT flags, CPoint point)
 {
 	// see large comment in previous function
-	
 
 	if ((GetKeyState(VK_LBUTTON) & 0x100) != 0) {
 		if (pIndex != -1)
@@ -86,15 +85,25 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 
 			//
 			if (currentTactic.player[pIndex].x < out) //ne daj igracima izvan terena
+			{
 				currentTactic.player[pIndex].x = out;
-
+				if (currentTactic.player[pIndex].y < out)
+					currentTactic.player[pIndex].y = out;
+				else if (currentTactic.player[pIndex].y + fsize.cy > rct.Height() - out)
+					currentTactic.player[pIndex].y = rct.Height() - out - fsize.cy;
+			}
 			else if (currentTactic.player[pIndex].x > rct.Width() - out - fsize.cx)
+			{
 				currentTactic.player[pIndex].x = rct.Width() - out - fsize.cx;
-
+				if (currentTactic.player[pIndex].y < out)
+					currentTactic.player[pIndex].y = out;
+				else if (currentTactic.player[pIndex].y + fsize.cy > rct.Height() - out)
+					currentTactic.player[pIndex].y = rct.Height() - out - fsize.cy;
+			}
 			else if (currentTactic.player[pIndex].y < out)
 				currentTactic.player[pIndex].y = out;
 
-			else if (currentTactic.player[pIndex].y + fsize.cy > rct.Height())
+			else if (currentTactic.player[pIndex].y + fsize.cy > rct.Height() - out)
 				currentTactic.player[pIndex].y = rct.Height() - out - fsize.cy;
 
 			else if (currentTactic.player[pIndex].x >= rct.Width() / 7 && currentTactic.player[pIndex].x <= rct.Width() / 7 * 2)
@@ -106,7 +115,7 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 					currentTactic.player[pIndex].position = _T("DR");
 			}
 
-			else if (currentTactic.player[pIndex].x >= rct.Width() / 7  *2 && currentTactic.player[pIndex].x <= rct.Width() / 7* 4) {
+			else if (currentTactic.player[pIndex].x >= rct.Width() / 7  *2 && currentTactic.player[pIndex].x <= rct.Width() / 7 *4) {
 
 				currentTactic.player[pIndex].position = _T("MC");
 				if (currentTactic.player[pIndex].y <= rct.Height() / 5)
@@ -149,7 +158,6 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 
 		}
 	}
-
 
 
 
