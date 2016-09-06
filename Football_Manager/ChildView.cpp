@@ -168,8 +168,14 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// see large comment in previous function
 	GetClientRect(&rct);
-	for (int i = 0; i < 11; i++) {
+	CClientDC hdc(this);
 
+	if (!fontL)fontL = hdc.GetCurrentFont();
+	hdc.SelectObject(fontL);
+
+	//
+	for (int i = 0; i < 11; i++) {
+		CSize fsize = hdc.GetTextExtent(currentTactic.player[i].position);
 		//calc relative
 		currentTactic.player[i].x = rct.Width() * currentTactic.player[i].rx;
 		currentTactic.player[i].y = rct.Height() * currentTactic.player[i].ry;
@@ -183,12 +189,39 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 				currentTactic.player[i].y = point.y;
 				currentTactic.player[i].rx = currentTactic.player[i].x / rct.Width();
 				currentTactic.player[i].ry = currentTactic.player[i].y / rct.Height();
+				//
+				if (currentTactic.player[i].x < out) //ne daj igracima izvan terena
+				{
+					currentTactic.player[i].x = out;
+					if (currentTactic.player[i].y < out)
+						currentTactic.player[i].y = out;
+					else if (currentTactic.player[i].y + fsize.cy > rct.Height() - out)
+						currentTactic.player[i].y = rct.Height() - out - fsize.cy;
+				}
+				else if (currentTactic.player[i].x > rct.Width() - out - fsize.cx)
+				{
+					currentTactic.player[i].x = rct.Width() - out - fsize.cx;
+					if (currentTactic.player[i].y < out)
+						currentTactic.player[i].y = out;
+					else if (currentTactic.player[i].y + fsize.cy > rct.Height() - out)
+						currentTactic.player[i].y = rct.Height() - out - fsize.cy;
+				}
+				else if (currentTactic.player[i].y < out)
+					currentTactic.player[i].y = out;
+
+				else if (currentTactic.player[i].y + fsize.cy > rct.Height() - out)
+					currentTactic.player[i].y = rct.Height() - out - fsize.cy;
+				//
+				currentTactic.player[i].rx = currentTactic.player[i].x / rct.Width();
+				currentTactic.player[i].ry = currentTactic.player[i].y / rct.Height();
 				pIndex = i;
 				//
 				init = true;
 				break;
 			}
 	}
+	DeleteObject(fontL);
+
 }
 
 
