@@ -319,13 +319,14 @@ void CChildView::OnPaint()
 	// TODO: Add your message handler code here
 	
 	GetClientRect(&rct);
-	CBrush brushGreen(RGB(0, 128, 0));//brush
+	CBrush brushGreen(RGB(0, 128, 0));//brush	
     dc.SelectObject(brushGreen); //select brush tool
     dc.Rectangle(0, 0, rct.right, rct.bottom);//draw rectangle
     DeleteObject(brushGreen);//delete brush tool
-
-	CPen* newPen = new CPen(PS_SOLID | PS_GEOMETRIC, 3, RGB(255, 255, 255));
-	CPen* pOldPen = dc.SelectObject(newPen);//select pen
+	HPEN hpen = CreatePen(PS_SOLID | PS_GEOMETRIC, 3, RGB(255, 255, 255));
+	dc.SelectObject(hpen);
+	//CPen* newPen = new CPen(PS_SOLID | PS_GEOMETRIC, 3, RGB(255, 255, 255));
+	//CPen* pOldPen = dc.SelectObject(newPen);//select pen
 	
     //crtanje okvira
 dc.MoveTo(out, out); //krajnja točka
@@ -390,7 +391,7 @@ dc.LineTo(rct.Width() - out / 2, rct.bottom / 18 * 8);
 dc.LineTo(rct.Width() - out / 2, rct.bottom / 18 * 10);
 dc.LineTo(rct.Width() - out, rct.bottom / 18 * 10);
 
-DeleteObject(newPen);//delete pen tool
+DeleteObject(hpen);//delete pen tool
 	// TODO: Add your message handler code here
 
 	// Do not call CWnd::OnPaint() for painting messages
