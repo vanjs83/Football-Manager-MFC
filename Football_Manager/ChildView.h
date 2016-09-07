@@ -18,7 +18,7 @@ public:
 	Tactic currentTactic;
 // Attributes
 public:
-	CFont *fontL = NULL;
+	CFont *fontL = nullptr;
 	COLORREF col = RGB(0, 0, 0);
 	int tactic = 1;
 	int out = 20;

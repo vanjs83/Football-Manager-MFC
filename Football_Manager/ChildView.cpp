@@ -400,8 +400,9 @@ DeleteObject(hpen);//delete pen tool
 	//crtanje igraca na terenu!!
 	
 	for (int i = 0; i < 11; i++) {
-		if (!fontL)
+		if (!fontL) 
 			fontL = dc.GetCurrentFont();
+		
 		CFont* def_font = dc.SelectObject(fontL);
 		dc.SetTextColor(col);
 		dc.SetTextAlign(TA_LEFT);
