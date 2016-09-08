@@ -325,8 +325,7 @@ void CChildView::OnPaint()
     DeleteObject(brushGreen);//delete brush tool
 	HPEN hpen = CreatePen(PS_SOLID | PS_GEOMETRIC, 3, RGB(255, 255, 255));
 	dc.SelectObject(hpen);
-	//CPen* newPen = new CPen(PS_SOLID | PS_GEOMETRIC, 3, RGB(255, 255, 255));
-	//CPen* pOldPen = dc.SelectObject(newPen);//select pen
+	
 	
     //crtanje okvira
 dc.MoveTo(out, out); //krajnja točka
@@ -391,6 +390,33 @@ dc.LineTo(rct.Width() - out / 2, rct.bottom / 18 * 8);
 dc.LineTo(rct.Width() - out / 2, rct.bottom / 18 * 10);
 dc.LineTo(rct.Width() - out, rct.bottom / 18 * 10);
 
+
+//Lijevi polukrug
+double x1, y1, x2, y2, x3, y3, x4, y4;
+x3 = out + rct.right / 8 + 1;
+y3 = rct.bottom / 12 * 5;
+x1 = out + rct.right / 11;
+y1 = y3;
+x4 = out + rct.right / 8+1;
+y4 = rct.bottom / 12 * 7;
+x2 = out + rct.right / 7;
+y2 = y4;
+dc.SetArcDirection(AD_CLOCKWISE);
+dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
+//
+//Desni polukrug
+x3 = rct.right / 8 * 7 - out;
+y3 = rct.bottom / 12 * 5;
+x1 = (rct.right / 11 * 10 - out);
+y1 = y3;
+x4 = rct.right / 8 * 7 - out;
+y4 = rct.bottom / 12 * 7;
+x2 = rct.right / 7 * 6 - out;
+y2 = y4;
+dc.SetArcDirection(AD_COUNTERCLOCKWISE);
+dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
+
+
 DeleteObject(hpen);//delete pen tool
 	// TODO: Add your message handler code here
 
@@ -398,7 +424,7 @@ DeleteObject(hpen);//delete pen tool
 	BOOL b = false;
 	     gk = false;
 	//crtanje igraca na terenu!!
-	
+	                
 	for (int i = 0; i < 11; i++) {
 		if (!fontL) 
 			fontL = dc.GetCurrentFont();
@@ -409,7 +435,7 @@ DeleteObject(hpen);//delete pen tool
 		dc.SetBkMode(TRANSPARENT);
 		if (currentTactic.player[i].position == _T("GK")) gk = true;
 		dc.TextOut(currentTactic.player[i].x, currentTactic.player[i].y, currentTactic.player[i].position);
-	//	dc.SelectObject(def_font);
+		dc.SelectObject(def_font);
 		DeleteObject(fontL); //delete object def_font
 				}
 
@@ -453,6 +479,7 @@ DeleteObject(hpen);//delete pen tool
 
 						str.Format(L"%g\n", tak.player[i].rx);
 						ffile.WriteString(str);
+
 						str.Format(L"%g\n", tak.player[i].ry);
 						ffile.WriteString(str);
 					}
@@ -519,18 +546,16 @@ DeleteObject(hpen);//delete pen tool
 				CString str;
 				while (ffile.ReadString(tc.name))//citam ime taktike
 				{
-					for (int i = 0; i < 11; i++) {
+					for (int i = 0; i < 11; i++) 
+					{
 					
 						ffile.ReadString(tc.player[i].position);//pozicija igraca
-
 
 						ffile.ReadString(str);
 						tc.player[i].rx = _wtof(str);
 
 						ffile.ReadString(str);
 						tc.player[i].ry = _wtof(str);
-
-
 					}
 
 					addToMenu(tc.name, tacticList.size());
