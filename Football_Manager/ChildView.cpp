@@ -28,6 +28,7 @@ CChildView::CChildView()
 
 CChildView::~CChildView()
 {
+
 }
 
 
@@ -171,9 +172,6 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 		
 		}
 	}
-
-
-
 	
 }
 
@@ -338,6 +336,8 @@ void CChildView::InitPlayers442() {
 	currentTactic.player[10].ry = y / rect.Height();
 }
   
+
+
 void CChildView::OnPaint()
 {  
 	
