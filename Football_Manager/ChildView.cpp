@@ -84,7 +84,7 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 			//
 			RECT rect = { x - (fsize.cx), y - (fsize.cy),(x)+(fsize.cx * 2), (y)+(fsize.cy * 2) };
 			//hdc.Rectangle(&rect);;
-			InvalidateRect(&rect, true);
+			InvalidateRect(&rect, true);//
 
 
 
@@ -166,11 +166,9 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 			currentTactic.player[pIndex].rx = x / rct.Width();
 			currentTactic.player[pIndex].ry = y / rct.Height();
 			//
-			RECT rect2 = { x - (fsize.cx), y - (fsize.cy),(x)+(fsize.cx * 2), (y)+(fsize.cy * 2) };
-			//hdc.Rectangle(&rect);;
-			InvalidateRect(&rect2, true);
+	
 			DeleteObject(SelectObject(hdc, holdfont));
-			//	ReleaseDC(&hdc);
+		
 		}
 	}
 
