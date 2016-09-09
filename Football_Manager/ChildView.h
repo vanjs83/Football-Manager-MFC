@@ -34,7 +34,7 @@ public:
 	int pIndex = -1;
 // Operations
 public:
-	void calcPlayers();
+	
 	void InitPlayers442();
 	void addToMenu(CString name, int id);
 	void SaveTactic();

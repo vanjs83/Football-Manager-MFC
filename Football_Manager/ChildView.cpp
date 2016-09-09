@@ -74,96 +74,103 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 		if (pIndex != -1)
 		{
 			CClientDC hdc(this);
+
 			HFONT hfnt = CreateFontIndirect(&lf);
 			HGDIOBJ holdfont = SelectObject(hdc, hfnt);
-	
 			CSize fsize = hdc.GetTextExtent(currentTactic.player[pIndex].position);
+			//
+			double x = rct.Width() * currentTactic.player[pIndex].rx;
+			double y = rct.Height() * currentTactic.player[pIndex].ry;
+			//
+			RECT rect = { x - (fsize.cx), y - (fsize.cy),(x)+(fsize.cx * 2), (y)+(fsize.cy * 2) };
+			//hdc.Rectangle(&rect);;
+			InvalidateRect(&rect, true);
+
+
 
 			//
-			currentTactic.player[pIndex].x = point.x;
-			currentTactic.player[pIndex].y = point.y;
+			x = point.x;
+			y = point.y;
 			//
-			currentTactic.player[pIndex].rx = currentTactic.player[pIndex].x / rct.Width();
-			currentTactic.player[pIndex].ry = currentTactic.player[pIndex].y / rct.Height();
+			currentTactic.player[pIndex].rx = x / rct.Width();
+			currentTactic.player[pIndex].ry = y / rct.Height();
 			//
-			//calc relative
-			currentTactic.player[pIndex].x = rct.Width() * currentTactic.player[pIndex].rx;
-			currentTactic.player[pIndex].y = rct.Height() * currentTactic.player[pIndex].ry;
 
+			x = rct.Width() * currentTactic.player[pIndex].rx;
+			y = rct.Height() * currentTactic.player[pIndex].ry;
 			//
-			if (currentTactic.player[pIndex].x < out) //ne daj igracima izvan terena
+			if (x < out) //ne daj igracima izvan terena
 			{
-				currentTactic.player[pIndex].x = out;
-				if (currentTactic.player[pIndex].y < out)
-					currentTactic.player[pIndex].y = out;
-				else if (currentTactic.player[pIndex].y + fsize.cy > rct.Height() - out)
-					currentTactic.player[pIndex].y = rct.Height() - out - fsize.cy;
+				x = out;
+				if (y < out)
+					y = out;
+				else if (y + fsize.cy > rct.Height() - out)
+					y = rct.Height() - out - fsize.cy;
 			}
-			else if (currentTactic.player[pIndex].x > rct.Width() - out - fsize.cx)
+			else if (x > rct.Width() - out - fsize.cx)
 			{
-				currentTactic.player[pIndex].x = rct.Width() - out - fsize.cx;
-				if (currentTactic.player[pIndex].y < out)
-					currentTactic.player[pIndex].y = out;
-				else if (currentTactic.player[pIndex].y + fsize.cy > rct.Height() - out)
-					currentTactic.player[pIndex].y = rct.Height() - out - fsize.cy;
+				x = rct.Width() - out - fsize.cx;
+				if (y < out)
+					y = out;
+				else if (y + fsize.cy > rct.Height() - out)
+					y = rct.Height() - out - fsize.cy;
 			}
-			else if (currentTactic.player[pIndex].y < out)
-				currentTactic.player[pIndex].y = out;
+			else if (y < out)
+				y = out;
 
-			else if (currentTactic.player[pIndex].y + fsize.cy > rct.Height() - out)
-				currentTactic.player[pIndex].y = rct.Height() - out - fsize.cy;
+			else if (y + fsize.cy > rct.Height() - out)
+				y = rct.Height() - out - fsize.cy;
 
-			else if (currentTactic.player[pIndex].x >= rct.Width() / 7 && currentTactic.player[pIndex].x <= rct.Width() / 7 * 2)
+			else if (x >= rct.Width() / 7 && x <= rct.Width() / 7 * 2)
 			{
 				currentTactic.player[pIndex].position = _T("CB");
-				if (currentTactic.player[pIndex].y <= rct.Height() / 5)
+				if (y <= rct.Height() / 5)
 					currentTactic.player[pIndex].position = _T("DL");
-				if (currentTactic.player[pIndex].y >= rct.Height() / 5 * 4)
+				if (y >= rct.Height() / 5 * 4)
 					currentTactic.player[pIndex].position = _T("DR");
 			}
 
-			else if (currentTactic.player[pIndex].x >= rct.Width() / 7  *2 && currentTactic.player[pIndex].x <= rct.Width() / 7 *4) {
+			else if (x >= rct.Width() / 7 * 2 && x <= rct.Width() / 7 * 4) {
 
 				currentTactic.player[pIndex].position = _T("MC");
-				if (currentTactic.player[pIndex].y <= rct.Height() / 5)
+				if (y <= rct.Height() / 5)
 					currentTactic.player[pIndex].position = _T("ML");
-				if (currentTactic.player[pIndex].y >= rct.Height() / 5 * 4)
+				if (y >= rct.Height() / 5 * 4)
 					currentTactic.player[pIndex].position = _T("MR");
 			}
 
-			else if (currentTactic.player[pIndex].x >= rct.Width() / 7 *3 && currentTactic.player[pIndex].x <= rct.Width() / 7  *5) {
+			else if (x >= rct.Width() / 7 * 3 && x <= rct.Width() / 7 * 5) {
 				currentTactic.player[pIndex].position = _T("AMC");
-				if (currentTactic.player[pIndex].y <= rct.Height() / 5 * 2)
+				if (y <= rct.Height() / 5 * 2)
 					currentTactic.player[pIndex].position = _T("AML");
-				if (currentTactic.player[pIndex].y >= rct.Height() / 5 * 3)
+				if (y >= rct.Height() / 5 * 3)
 					currentTactic.player[pIndex].position = _T("AMR");
 			}
 
-			else if (currentTactic.player[pIndex].x >= rct.Width() / 7 * 5) {
+			else if (x >= rct.Width() / 7 * 5) {
 				currentTactic.player[pIndex].position = _T("FC");
-				if (currentTactic.player[pIndex].y <= rct.Height() / 5)
+				if (y <= rct.Height() / 5)
 					currentTactic.player[pIndex].position = _T("LFC");
-				if (currentTactic.player[pIndex].y >= rct.Height() / 5 * 4)
+				if (y >= rct.Height() / 5 * 4)
 					currentTactic.player[pIndex].position = _T("RFC");
 
 			}
 			//
-			if (currentTactic.player[pIndex].x <= rct.Width() / 7) {//Postavi golmana
+			if (x <= rct.Width() / 7) {//Postavi golmana
 				if (!gk) {
 					currentTactic.player[pIndex].position = _T("GK");
 					gk = true;
 				}
 			}
 			//
-			currentTactic.player[pIndex].rx = currentTactic.player[pIndex].x / rct.Width();
-			currentTactic.player[pIndex].ry = currentTactic.player[pIndex].y / rct.Height();
+			currentTactic.player[pIndex].rx = x / rct.Width();
+			currentTactic.player[pIndex].ry = y / rct.Height();
 			//
-
-			//   RECT rect = { currentTactic.player[pIndex].x - (fsize.cx  10), currentTactic.player[pIndex].y - (fsize.cy  10),(currentTactic.player[pIndex].x) + (fsize.cx  10), (currentTactic.player[pIndex].y) + (fsize.cy  10) };
-			RECT rect = { currentTactic.player[pIndex].x - (fsize.cx), currentTactic.player[pIndex].y - (fsize.cy),(currentTactic.player[pIndex].x) + (fsize.cx  *2), (currentTactic.player[pIndex].y) + (fsize.cy  *2) };
-			InvalidateRect(&rect, true);
+			RECT rect2 = { x - (fsize.cx), y - (fsize.cy),(x)+(fsize.cx * 2), (y)+(fsize.cy * 2) };
+			//hdc.Rectangle(&rect);;
+			InvalidateRect(&rect2, true);
 			DeleteObject(SelectObject(hdc, holdfont));
-			ReleaseDC(&hdc);
+			//	ReleaseDC(&hdc);
 		}
 	}
 
@@ -180,53 +187,53 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	// see large comment in previous function
 	GetClientRect(&rct);
 	CClientDC hdc(this);
+
 	HFONT hfnt = CreateFontIndirect(&lf);
 	HGDIOBJ holdfont = SelectObject(hdc, hfnt);
 
-
 	//
 	for (int i = 0; i < 11; i++) {
+		double x, y;
 		CSize fsize = hdc.GetTextExtent(currentTactic.player[i].position);
 		//calc relative
-		currentTactic.player[i].x = rct.Width() * currentTactic.player[i].rx;
-		currentTactic.player[i].y = rct.Height() * currentTactic.player[i].ry;
+		x = rct.Width() * currentTactic.player[i].rx;
+		y = rct.Height() * currentTactic.player[i].ry;
 		//
 
-		if (point.x + out >= currentTactic.player[i].x && point.x <= currentTactic.player[i].x + out)
-			if (point.y + out >= currentTactic.player[i].y && point.y <= currentTactic.player[i].y + out)
+		if (point.x + out >= x && point.x <= x + out)
+			if (point.y + out >= y && point.y <= y + out)
 			{
 
-				currentTactic.player[i].x = point.x;
-				currentTactic.player[i].y = point.y;
-				currentTactic.player[i].rx = currentTactic.player[i].x / rct.Width();
-				currentTactic.player[i].ry = currentTactic.player[i].y / rct.Height();
-				///////////////////////////////////////////////////////////////////////
-				if (currentTactic.player[i].x < out) //ne daj igracima izvan terena
+				x = point.x;
+				y = point.y;
+				currentTactic.player[i].rx = x / rct.Width();
+				currentTactic.player[i].ry = y / rct.Height();
+				//
+				if (x < out) //ne daj igracima izvan terena
 				{
-					currentTactic.player[i].x = out;
-					if (currentTactic.player[i].y < out)
-						currentTactic.player[i].y = out;
-					else if (currentTactic.player[i].y + fsize.cy > rct.Height() - out)
-						currentTactic.player[i].y = rct.Height() - out - fsize.cy;
+					x = out;
+					if (y < out)
+						y = out;
+					else if (y + fsize.cy > rct.Height() - out)
+						y = rct.Height() - out - fsize.cy;
 				}
-				else if (currentTactic.player[i].x > rct.Width() - out - fsize.cx)
+				else if (x > rct.Width() - out - fsize.cx)
 				{
-					currentTactic.player[i].x = rct.Width() - out - fsize.cx;
-					if (currentTactic.player[i].y < out)
-						currentTactic.player[i].y = out;
-					else if (currentTactic.player[i].y + fsize.cy > rct.Height() - out)
-						currentTactic.player[i].y = rct.Height() - out - fsize.cy;
+					x = rct.Width() - out - fsize.cx;
+					if (y < out)
+						y = out;
+					else if (y + fsize.cy > rct.Height() - out)
+						y = rct.Height() - out - fsize.cy;
 				}
-				else if (currentTactic.player[i].y < out)
-					currentTactic.player[i].y = out;
+				else if (y < out)
+					y = out;
 
-				else if (currentTactic.player[i].y + fsize.cy > rct.Height() - out)
-					currentTactic.player[i].y = rct.Height() - out - fsize.cy;
+				else if (y + fsize.cy > rct.Height() - out)
+					y = rct.Height() - out - fsize.cy;
 				//
-				currentTactic.player[i].rx = currentTactic.player[i].x / rct.Width();
-				currentTactic.player[i].ry = currentTactic.player[i].y / rct.Height();
+				currentTactic.player[i].rx = x / rct.Width();
+				currentTactic.player[i].ry = y / rct.Height();
 				pIndex = i;
-				//
 				init = true;
 				break;
 			}
@@ -248,28 +255,16 @@ void CChildView::OnLButtonUp(UINT nFlags, CPoint point)
 	pIndex = -1;
 
 }
-void CChildView::calcPlayers()
-{
-	GetClientRect(&rct);
-	for (int i = 0; i < 11; i++) {
-		//calc relative
-		currentTactic.player[i].x = rct.Width() * currentTactic.player[i].rx;
-		currentTactic.player[i].y = rct.Height() * currentTactic.player[i].ry;
-		//
-	}
-	init = true;
-}
+
+
+
+
 
 void CChildView::OnSize(UINT nType, int cx, int cy)
 {
-	if (!init) {
-
-		InitPlayers442();
-	}
-	else calcPlayers();
-	
-
-	
+	if (!init) 
+        InitPlayers442();
+		
 }
 
 
@@ -278,6 +273,10 @@ void CChildView::InitPlayers442() {
 	//int out = 20;
 	//CRect rect;
 	GetClientRect(&rect);
+	double x, y;
+	GetClientRect(&rect);
+	if (rect.Width() == 0)return;
+	if (rect.Width() == 0)return;
 	currentTactic.name = _T("4:4:2");
 	currentTactic.player[0].position = _T("GK");
 	currentTactic.player[1].position = _T("DR");
@@ -292,39 +291,54 @@ void CChildView::InitPlayers442() {
 	currentTactic.player[10].position = _T("FC");
 	//
 	//crtanje obrane
-	currentTactic.player[0].x = out;//gk
-	currentTactic.player[0].y = rect.Height() / 2 - out;
-	currentTactic.player[1].x = rect.Width() / 4;//DR
-	currentTactic.player[1].y = rect.Height() / 5 * 4;
-	currentTactic.player[2].x = rect.Width() / 4;//DL
-	currentTactic.player[2].y = rect.Height() / 5;
-	currentTactic.player[3].x = rect.Width() / 4;//CB
-	currentTactic.player[3].y = rect.Height() / 5 * 2;
-	currentTactic.player[4].x = rect.Width() / 4;//CB
-	currentTactic.player[4].y = rect.Height() / 5 * 3;
+	x = out;//gk
+	y = rect.Height() / 2 - out;
+	currentTactic.player[0].rx = x / rect.Width();
+	currentTactic.player[0].ry = y / rect.Height();
+	x = rect.Width() / 4;//DR
+	y = rect.Height() / 5 * 4;
+	currentTactic.player[1].rx = x / rect.Width();
+	currentTactic.player[1].ry = y / rect.Height();
+	x = rect.Width() / 4;//DL
+	y = rect.Height() / 5;
+	currentTactic.player[2].rx = x / rect.Width();
+	currentTactic.player[2].ry = y / rect.Height();
+	x = rect.Width() / 4;//CB
+	y = rect.Height() / 5 * 2;
+	currentTactic.player[3].rx = x / rect.Width();
+	currentTactic.player[3].ry = y / rect.Height();
+
+	x = rect.Width() / 4;//CB
+	y = rect.Height() / 5 * 3;
+	currentTactic.player[4].rx = x / rect.Width();
+	currentTactic.player[4].ry = y / rect.Height();
 	//crtanje veze
-	currentTactic.player[5].x = rect.Width() / 4 * 2;//MR
-	currentTactic.player[5].y = rect.Height() / 5 * 4;
-	currentTactic.player[6].x = rect.Width() / 4 * 2;//ML
-	currentTactic.player[6].y = rect.Height() / 5;
-	currentTactic.player[7].x = rect.Width() / 4 * 2;//MC
-	currentTactic.player[7].y = rect.Height() / 5 * 2;
-	currentTactic.player[8].x = rect.Width() / 4 * 2;//MC
-	currentTactic.player[8].y = rect.Height() / 5 * 3;
+	x = rect.Width() / 4 * 2;//MR
+	y = rect.Height() / 5 * 4;
+	currentTactic.player[5].rx = x / rect.Width();
+	currentTactic.player[5].ry = y / rect.Height();
+	x = rect.Width() / 4 * 2;//ML
+	y = rect.Height() / 5;
+	currentTactic.player[6].rx = x / rect.Width();
+	currentTactic.player[6].ry = y / rect.Height();
+	x = rect.Width() / 4 * 2;//MC
+	y = rect.Height() / 5 * 2;
+	currentTactic.player[7].rx = x / rect.Width();
+	currentTactic.player[7].ry = y / rect.Height();
+	x = rect.Width() / 4 * 2;//MC
+	y = rect.Height() / 5 * 3;
+	currentTactic.player[8].rx = x / rect.Width();
+	currentTactic.player[8].ry = y / rect.Height();
 	//crtanje napada
-	currentTactic.player[9].x = rect.Width() / 4 * 3;//FC
-	currentTactic.player[9].y = rect.Height() / 5 * 2;
-	currentTactic.player[10].x = rect.Width() / 4 * 3;//FC
-	currentTactic.player[10].y = rect.Height() / 5 * 3;
-
-	// relative rx, ry
-	for (int i = 0; i < 11; i++) {
-		currentTactic.player[i].rx = currentTactic.player[i].x / rect.Width();
-		currentTactic.player[i].ry = currentTactic.player[i].y / rect.Height();
-	}
-
+	x = rect.Width() / 4 * 3;//FC
+	y = rect.Height() / 5 * 2;
+	currentTactic.player[9].rx = x / rect.Width();
+	currentTactic.player[9].ry = y / rect.Height();
+	x = rect.Width() / 4 * 3;//FC
+	y = rect.Height() / 5 * 3;
+	currentTactic.player[10].rx = x / rect.Width();
+	currentTactic.player[10].ry = y / rect.Height();
 }
-
   
 void CChildView::OnPaint()
 {  
@@ -458,13 +472,14 @@ dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
 		 HFONT hfnt = CreateFontIndirect(&lf);
 		 HGDIOBJ holdfont = dc.SelectObject(hfnt);
 	for (int i = 0; i < 11; i++) {
-	//	if (!fontL) 
-	//		fontL = dc.GetCurrentFont();
+	
+		double x = rct.Width() * currentTactic.player[i].rx;
+		double y = rct.Height() * currentTactic.player[i].ry;
 		dc.SetTextColor(col);
 		dc.SetTextAlign(TA_LEFT);
 		dc.SetBkMode(TRANSPARENT);
 		if (currentTactic.player[i].position == _T("GK")) gk = true;
-		dc.TextOut(currentTactic.player[i].x, currentTactic.player[i].y, currentTactic.player[i].position);
+		dc.TextOut(x, y, currentTactic.player[i].position);
 
  				}
     	dc.SelectObject(holdfont);
@@ -645,7 +660,7 @@ dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
 			if (nID == id)
 			{
 				currentTactic = tak;
-				calcPlayers();
+			
 				Invalidate();
 				UpdateWindow();
 				return;
