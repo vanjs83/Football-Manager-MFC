@@ -8,7 +8,7 @@
 #include <afxwin.h>
 #include <string>
 #include "MainFrm.h"
-
+#include <tchar.h>
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -18,6 +18,12 @@
 
 CChildView::CChildView()
 {
+	CClientDC hdc(0);
+	ZeroMemory(&lf, sizeof lf);
+	_tcscpy_s(lf.lfFaceName, _T("Arial"));
+	lf.lfHeight = -12 * GetDeviceCaps(hdc, LOGPIXELSY) / 72;
+
+
 }
 
 CChildView::~CChildView()
@@ -68,10 +74,11 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 		if (pIndex != -1)
 		{
 			CClientDC hdc(this);
-
-			if (!fontL)fontL = hdc.GetCurrentFont();
-			hdc.SelectObject(fontL);
+			HFONT hfnt = CreateFontIndirect(&lf);
+			HGDIOBJ holdfont = SelectObject(hdc, hfnt);
+	
 			CSize fsize = hdc.GetTextExtent(currentTactic.player[pIndex].position);
+
 			//
 			currentTactic.player[pIndex].x = point.x;
 			currentTactic.player[pIndex].y = point.y;
@@ -155,7 +162,8 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 			//   RECT rect = { currentTactic.player[pIndex].x - (fsize.cx  10), currentTactic.player[pIndex].y - (fsize.cy  10),(currentTactic.player[pIndex].x) + (fsize.cx  10), (currentTactic.player[pIndex].y) + (fsize.cy  10) };
 			RECT rect = { currentTactic.player[pIndex].x - (fsize.cx), currentTactic.player[pIndex].y - (fsize.cy),(currentTactic.player[pIndex].x) + (fsize.cx  *2), (currentTactic.player[pIndex].y) + (fsize.cy  *2) };
 			InvalidateRect(&rect, true);
-
+			DeleteObject(SelectObject(hdc, holdfont));
+			ReleaseDC(&hdc);
 		}
 	}
 
@@ -172,9 +180,9 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	// see large comment in previous function
 	GetClientRect(&rct);
 	CClientDC hdc(this);
+	HFONT hfnt = CreateFontIndirect(&lf);
+	HGDIOBJ holdfont = SelectObject(hdc, hfnt);
 
-	if (!fontL)fontL = hdc.GetCurrentFont();
-	hdc.SelectObject(fontL);
 
 	//
 	for (int i = 0; i < 11; i++) {
@@ -192,7 +200,7 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 				currentTactic.player[i].y = point.y;
 				currentTactic.player[i].rx = currentTactic.player[i].x / rct.Width();
 				currentTactic.player[i].ry = currentTactic.player[i].y / rct.Height();
-				//
+				///////////////////////////////////////////////////////////////////////
 				if (currentTactic.player[i].x < out) //ne daj igracima izvan terena
 				{
 					currentTactic.player[i].x = out;
@@ -223,7 +231,8 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 				break;
 			}
 	}
-	DeleteObject(fontL);
+	DeleteObject(SelectObject(hdc, holdfont));
+	ReleaseDC(&hdc);	
 }
 
 
@@ -253,12 +262,13 @@ void CChildView::calcPlayers()
 
 void CChildView::OnSize(UINT nType, int cx, int cy)
 {
-
-	
 	if (!init) {
+
 		InitPlayers442();
 	}
 	else calcPlayers();
+	
+
 	
 }
 
@@ -321,7 +331,7 @@ void CChildView::OnPaint()
 	
 	CPaintDC dc(this); // device context for painting
 	// TODO: Add your message handler code here
-	
+
 	GetClientRect(&rct);
 	//Brush
 	CBrush *oldBrush;
@@ -444,21 +454,21 @@ dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
 	BOOL b = false;
 	     gk = false;
 	//crtanje igraca na terenu!!
-	                
+	    
+		 HFONT hfnt = CreateFontIndirect(&lf);
+		 HGDIOBJ holdfont = dc.SelectObject(hfnt);
 	for (int i = 0; i < 11; i++) {
-		if (!fontL) 
-			fontL = dc.GetCurrentFont();
-		
-		CFont* def_font = dc.SelectObject(fontL);
+	//	if (!fontL) 
+	//		fontL = dc.GetCurrentFont();
 		dc.SetTextColor(col);
 		dc.SetTextAlign(TA_LEFT);
 		dc.SetBkMode(TRANSPARENT);
 		if (currentTactic.player[i].position == _T("GK")) gk = true;
 		dc.TextOut(currentTactic.player[i].x, currentTactic.player[i].y, currentTactic.player[i].position);
-		dc.SelectObject(def_font);
-		DeleteObject(fontL); //delete object def_font
-				}
 
+ 				}
+    	dc.SelectObject(holdfont);
+	    DeleteObject(holdfont); //delete object def_font
 	
 	// Do not call CWnd::OnPaint() for painting messages
 		}
@@ -587,24 +597,23 @@ dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
 		}
 	}
 	
-	bool CChildView::GetFont() {
+	bool CChildView::GetFont(LOGFONT& lf, COLORREF& col) {
 
-		CFontDialog dlg;
-		if (dlg.DoModal() == IDOK)
-		{
-			fontL = new CFont;
-			fontL->CreateFont(dlg.m_cf.lpLogFont->lfHeight, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, dlg.m_cf.lpLogFont->lfFaceName);
-			
-			col = dlg.GetColor();
-			DeleteObject(fontL);
+		CHOOSEFONT cf;
+		ZeroMemory(&cf, sizeof cf);
+		cf.lStructSize = sizeof cf;
+		cf.Flags = CF_INITTOLOGFONTSTRUCT | CF_SCREENFONTS | CF_EFFECTS;
+		cf.lpLogFont = &lf;
+		cf.rgbColors = col;
+		if (ChooseFont(&cf)) {
+			col = cf.rgbColors;
 			return true;
 		}
 		return false;
 
-
-
-
 	}
+
+
 	void CChildView::OnOptionsSavetactic()
 	{
 	    
@@ -648,11 +657,12 @@ dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
 	void CChildView::SettingsFont()
 	{
 		// TODO: Add your command handler code here
-		if (GetFont())
+		if (GetFont(lf,  col))
 		{
 			InvalidateRect(NULL, true);
 			UpdateWindow();
 		}
+		
 	}
 
 

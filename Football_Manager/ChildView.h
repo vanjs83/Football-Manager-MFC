@@ -12,14 +12,19 @@
 class CChildView : public CWnd
 {
 // Construction
+	
+	
 public:
 	CChildView();
+
 	std::vector<Tactic>tacticList;
 	Tactic currentTactic;
 // Attributes
+
 public:
-	CFont *fontL = nullptr;
-	COLORREF col = RGB(0, 0, 0);
+
+	COLORREF col = RGB(0,0,0);
+	LOGFONT lf;
 	int tactic = 1;
 	int out = 20;
 	POINT mouseP;
@@ -33,7 +38,7 @@ public:
 	void InitPlayers442();
 	void addToMenu(CString name, int id);
 	void SaveTactic();
-	bool GetFont();
+	bool GetFont(LOGFONT& lf, COLORREF& col);
 	void RemoveMenu(CString name);
 	void deleteTactic(Tactic tak);
 // Overrides
