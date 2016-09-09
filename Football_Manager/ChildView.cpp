@@ -164,6 +164,9 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 	
 }
 
+
+
+
 void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// see large comment in previous function
@@ -221,8 +224,9 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 			}
 	}
 	DeleteObject(fontL);
-
 }
+
+
 
 
 
@@ -319,13 +323,17 @@ void CChildView::OnPaint()
 	// TODO: Add your message handler code here
 	
 	GetClientRect(&rct);
+	//Brush
+	CBrush *oldBrush;
 	CBrush brushGreen(RGB(0, 128, 0));//brush	
-    dc.SelectObject(brushGreen); //select brush tool
+    oldBrush= dc.SelectObject(&brushGreen); //select brush tool
     dc.Rectangle(0, 0, rct.right, rct.bottom);//draw rectangle
-    DeleteObject(brushGreen);//delete brush tool
-	HPEN hpen = CreatePen(PS_SOLID | PS_GEOMETRIC, 3, RGB(255, 255, 255));
-	dc.SelectObject(hpen);
+	dc.SelectObject(oldBrush);
+	DeleteObject(brushGreen);//delete brush tool
 	
+
+	CPen pen(PS_SOLID, 3, RGB(255, 255, 255)); // lokalna varijabla u OnPaint
+	CPen* oldPen = dc.SelectObject(&pen); // selekcija vraća prethodni
 	
     //crtanje okvira
 dc.MoveTo(out, out); //krajnja točka
@@ -340,8 +348,6 @@ dc.LineTo(rct.right - out, rct.bottom - out);
 dc.MoveTo(out, rct.bottom - out);
 dc.LineTo(rct.right - out, rct.bottom - out);
 
-	//crtanje kruga
-dc.Ellipse(rct.right / 3 + out, rct.bottom / 4, rct.right / 3 * 2 - out, rct.bottom / 4 * 3);
 
 dc.MoveTo((rct.right - out + out) / 2, out);
 dc.LineTo((rct.right - out + out) / 2, rct.bottom - out);
@@ -397,7 +403,7 @@ x3 = out + rct.right / 8 + 1;
 y3 = rct.bottom / 12 * 5;
 x1 = out + rct.right / 11;
 y1 = y3;
-x4 = out + rct.right / 8+1;
+x4 = out + rct.right / 8 + 1;
 y4 = rct.bottom / 12 * 7;
 x2 = out + rct.right / 7;
 y2 = y4;
@@ -417,7 +423,21 @@ dc.SetArcDirection(AD_COUNTERCLOCKWISE);
 dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
 
 
-DeleteObject(hpen);//delete pen tool
+//crtanje kruga
+x1 = rct.right / 8 * 3 ;
+y1 = rct.bottom / 4 ;
+x2 = rct.right / 8 * 5;
+y2 = rct.bottom / 4 * 3;
+x3 = rct.right / 2 ;
+y3 = rct.bottom / 2 / 2;
+x4 = rct.right / 2;
+y4 = y3 = rct.bottom / 2 / 2;
+dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
+
+
+
+   dc.SelectObject(oldPen); //select delete object
+	DeleteObject(pen);    // delete object
 	// TODO: Add your message handler code here
 
 	// Do not call CWnd::OnPaint() for painting messages
