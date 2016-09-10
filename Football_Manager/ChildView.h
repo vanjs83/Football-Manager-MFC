@@ -12,8 +12,8 @@
 class CChildView : public CWnd
 {
 // Construction
-	
-	
+	int numFont;
+	COLORREF col;
 public:
 	CChildView();
 
@@ -23,7 +23,7 @@ public:
 
 public:
 
-	COLORREF col = RGB(0,0,0);
+ 	//COLORREF col = RGB(0,0,0);
 	LOGFONT lf;
 	int tactic = 1;
 	int out = 20;

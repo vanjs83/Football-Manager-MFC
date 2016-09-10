@@ -16,7 +16,7 @@
 
 // CChildView
 
-CChildView::CChildView()
+CChildView::CChildView():col(RGB(0,0,0))
 {
 	CClientDC hdc(0);
 	ZeroMemory(&lf, sizeof lf);
