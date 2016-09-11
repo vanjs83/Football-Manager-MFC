@@ -12,7 +12,7 @@
 class CChildView : public CWnd
 {
 // Construction
-	int numFont;
+
 	COLORREF col;
 public:
 	CChildView();
