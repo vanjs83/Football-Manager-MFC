@@ -4,7 +4,7 @@
 #include<vector>
 #include "Player.h"
 #include "Tactic.h"
-
+#include <tchar.h>
 #pragma once
 
 // CChildView window
@@ -12,18 +12,15 @@
 class CChildView : public CWnd
 {
 // Construction
-
 	COLORREF col;
+	
 public:
 	CChildView();
 
 	std::vector<Tactic>tacticList;
 	Tactic currentTactic;
 // Attributes
-
 public:
-
- 	//COLORREF col = RGB(0,0,0);
 	LOGFONT lf;
 	int tactic = 1;
 	int out = 20;
@@ -34,7 +31,6 @@ public:
 	int pIndex = -1;
 // Operations
 public:
-	
 	void InitPlayers442();
 	void addToMenu(CString name, int id);
 	void SaveTactic();
