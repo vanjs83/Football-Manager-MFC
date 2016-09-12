@@ -68,7 +68,7 @@ END
 
 IDD_DIALOG1 DIALOGEX 0, 0, 239, 100
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Dialog"
+CAPTION "Insert tactic name"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,65,66,50,14
@@ -105,6 +105,41 @@ END
 IDD_DIALOG1 AFX_DIALOG_LAYOUT
 BEGIN
     0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_STRING315           "GK"
+    IDS_STRING316           "DR"
+    IDS_STRING317           "DL"
+    IDS_STRING318           "CB"
+    IDS_STRING319           "ML"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_STRING320           "MR"
+    IDS_STRING321           "MC"
+    IDS_STRING322           "AML"
+    IDS_STRING323           "AMR"
+    IDS_STRING324           "AMC"
+    IDS_STRING325           "FC"
+    IDS_STRING326           "Set GK"
+    IDS_STRING327           "Fault!"
+    IDS_STRING328           "Do you whish to delete current tactic?"
+    IDS_STRING329           "Question"
+    IDS_STRING330           "You can't delete default tactic?"
+    IDS_STRING331           "4:4:2"
+    IDS_STRING332           "Tactic"
+    IDS_STRING333           "RFC"
+    IDS_STRING334           "LFC"
+    IDS_STRING335           "Arial"
 END
 
 #endif    // Croatian (Croatia) resources
@@ -359,6 +394,35 @@ STRINGTABLE
 BEGIN
     AFX_IDS_SCRESTORE       "Restore the window to normal size"
     AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_STRING315           "GK"
+    IDS_STRING316           "DR"
+    IDS_STRING317           "DL"
+    IDS_STRING318           "CB"
+    IDS_STRING319           "ML"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_STRING320           "MR"
+    IDS_STRING321           "MC"
+    IDS_STRING322           "AML"
+    IDS_STRING323           "AMR"
+    IDS_STRING324           "AMC"
+    IDS_STRING325           "FC"
+    IDS_STRING326           "Set GK"
+    IDS_STRING327           "Fault!"
+    IDS_STRING328           "Do you whish to delete current tactic?"
+    IDS_STRING329           "Question"
+    IDS_STRING330           "You can't delete default tactic?"
+    IDS_STRING331           "4:4:2"
+    IDS_STRING332           "Tactic"
+    IDS_STRING333           "RFC"
+    IDS_STRING334           "LFC"
+    IDS_STRING335           "Arial"
 END
 
 #endif    // English (United States) resources

@@ -7,6 +7,27 @@
 #define IDR_MAINFRAME                   128
 #define IDR_Football_ManageTYPE         130
 #define IDD_DIALOG1                     310
+#define IDS_STRING315                   315
+#define IDS_STRING316                   316
+#define IDS_STRING317                   317
+#define IDS_STRING318                   318
+#define IDS_STRING319                   319
+#define IDS_STRING320                   320
+#define IDS_STRING321                   321
+#define IDS_STRING322                   322
+#define IDS_STRING323                   323
+#define IDS_STRING324                   324
+#define IDS_STRING325                   325
+#define IDS_STRING326                   326
+#define IDS_STRING327                   327
+#define IDS_STRING328                   328
+#define IDS_STRING329                   329
+#define IDS_STRING330                   330
+#define IDS_STRING331                   331
+#define IDS_STRING332                   332
+#define IDS_STRING333                   333
+#define IDS_STRING334                   334
+#define IDS_STRING335                   335
 #define IDC_EDIT1                       1000
 #define ID_TACTIC                       32771
 #define ID_TACTIC_4                     32772
@@ -41,7 +62,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        312
+#define _APS_NEXT_RESOURCE_VALUE        331
 #define _APS_NEXT_COMMAND_VALUE         32799
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           310

@@ -20,7 +20,7 @@ CChildView::CChildView():col(RGB(0,0,0))
 {
 	CClientDC hdc(0);
 	ZeroMemory(&lf, sizeof lf);
-	_tcscpy_s(lf.lfFaceName, _T("Arial"));
+	_tcscpy_s(lf.lfFaceName, LoadStringFromResource(335));
 	lf.lfHeight = -12 * GetDeviceCaps(hdc, LOGPIXELSY) / 72;
 
 
@@ -46,8 +46,16 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 END_MESSAGE_MAP()
 
 
+CString CChildView::LoadStringFromResource(UINT id)
+{
+	CString cs;
+	cs.LoadStringW(id);
+	return cs;
+}
 
-// CChildView message handlers
+
+
+
 
 BOOL CChildView::OnEraseBkgnd(CDC* pDC)
 {
@@ -124,42 +132,42 @@ void CChildView::OnMouseMove(UINT flags, CPoint point)
 
 			else if (x >= rct.Width() / 7 && x <= rct.Width() / 7 * 2)
 			{
-				currentTactic.player[pIndex].position = _T("CB");
+				currentTactic.player[pIndex].position = LoadStringFromResource(IDS_STRING318);
 				if (y <= rct.Height() / 5)
-					currentTactic.player[pIndex].position = _T("DL");
+					currentTactic.player[pIndex].position = LoadStringFromResource(IDS_STRING317);
 				if (y >= rct.Height() / 5 * 4)
-					currentTactic.player[pIndex].position = _T("DR");
+					currentTactic.player[pIndex].position = LoadStringFromResource(IDS_STRING316);
 			}
 
 			else if (x >= rct.Width() / 7 * 2 && x <= rct.Width() / 7 * 4) {
 
-				currentTactic.player[pIndex].position = _T("MC");
+				currentTactic.player[pIndex].position = LoadStringFromResource(IDS_STRING321);
 				if (y <= rct.Height() / 5)
-					currentTactic.player[pIndex].position = _T("ML");
+					currentTactic.player[pIndex].position = LoadStringFromResource(IDS_STRING319);
 				if (y >= rct.Height() / 5 * 4)
-					currentTactic.player[pIndex].position = _T("MR");
+					currentTactic.player[pIndex].position = LoadStringFromResource(IDS_STRING320);
 			}
 
 			else if (x >= rct.Width() / 7 * 3 && x <= rct.Width() / 7 * 5) {
-				currentTactic.player[pIndex].position = _T("AMC");
+				currentTactic.player[pIndex].position = LoadStringFromResource(IDS_STRING324);
 				if (y <= rct.Height() / 5 * 2)
-					currentTactic.player[pIndex].position = _T("AML");
+					currentTactic.player[pIndex].position = LoadStringFromResource(IDS_STRING322);
 				if (y >= rct.Height() / 5 * 3)
-					currentTactic.player[pIndex].position = _T("AMR");
+					currentTactic.player[pIndex].position = LoadStringFromResource(IDS_STRING323);
 			}
 
 			else if (x >= rct.Width() / 7 * 5) {
-				currentTactic.player[pIndex].position = _T("FC");
+				currentTactic.player[pIndex].position = LoadStringFromResource(IDS_STRING325);
 				if (y <= rct.Height() / 5)
-					currentTactic.player[pIndex].position = _T("LFC");
+					currentTactic.player[pIndex].position = LoadStringFromResource(IDS_STRING334);
 				if (y >= rct.Height() / 5 * 4)
-					currentTactic.player[pIndex].position = _T("RFC");
+					currentTactic.player[pIndex].position = LoadStringFromResource(IDS_STRING333);
 
 			}
 			//
 			if (x <= rct.Width() / 7) {
 				if (!gk) {
-					currentTactic.player[pIndex].position = _T("GK");
+					currentTactic.player[pIndex].position = LoadStringFromResource(IDS_STRING315);
 					gk = true;
 				}
 			}
@@ -271,18 +279,18 @@ void CChildView::InitPlayers442() {
 	GetClientRect(&rect);
 	if (rect.Width() == 0)return;
 	if (rect.Width() == 0)return;
-	currentTactic.name = _T("4:4:2");
-	currentTactic.player[0].position = _T("GK");
-	currentTactic.player[1].position = _T("DR");
-	currentTactic.player[2].position = _T("DL");
-	currentTactic.player[3].position = _T("CB");
-	currentTactic.player[4].position = _T("CB");
-	currentTactic.player[5].position = _T("MR");
-	currentTactic.player[6].position = _T("ML");
-	currentTactic.player[7].position = _T("MC");
-	currentTactic.player[8].position = _T("MC");
-	currentTactic.player[9].position = _T("FC");
-	currentTactic.player[10].position = _T("FC");
+	currentTactic.name = LoadStringFromResource(IDS_STRING331);
+	currentTactic.player[0].position = LoadStringFromResource(IDS_STRING315);
+	currentTactic.player[1].position = LoadStringFromResource(IDS_STRING316);
+	currentTactic.player[2].position = LoadStringFromResource(IDS_STRING317); 
+	currentTactic.player[3].position = LoadStringFromResource(IDS_STRING318); 
+	currentTactic.player[4].position = LoadStringFromResource(IDS_STRING318); 
+	currentTactic.player[5].position = LoadStringFromResource(IDS_STRING320); 
+	currentTactic.player[6].position = LoadStringFromResource(IDS_STRING319); 
+	currentTactic.player[7].position = LoadStringFromResource(IDS_STRING321); 
+	currentTactic.player[8].position = LoadStringFromResource(IDS_STRING321); 
+	currentTactic.player[9].position = LoadStringFromResource(IDS_STRING325); 
+	currentTactic.player[10].position = LoadStringFromResource(IDS_STRING325); 
 
 	
 	x = out;
@@ -474,7 +482,7 @@ dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
 		dc.SetTextColor(col);
 		dc.SetTextAlign(TA_LEFT);
 		dc.SetBkMode(TRANSPARENT);
-		if (currentTactic.player[i].position == _T("GK")) gk = true;
+		if (currentTactic.player[i].position == IDS_STRING315) gk = true;
 		dc.TextOut(x, y, currentTactic.player[i].position);
 
  				}
@@ -539,7 +547,7 @@ dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
 
 	
 		CMenu* mmenu = AfxGetMainWnd()->GetMenu();
-		int pos = FindMenuItem(mmenu, _T("Tactic"));
+		int pos = FindMenuItem(mmenu, LoadStringFromResource(332));
 		CMenu* submenu = mmenu->GetSubMenu(pos);
 		UINT mid = submenu->GetMenuItemID(pos);
 		if (pos == -1)
@@ -634,7 +642,7 @@ dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
 		{
 
 				if (!gk) {
-					MessageBox(_T("Set GK!!"), _T("Fault!!"), MB_OK);
+					MessageBox(LoadStringFromResource(IDS_STRING326), LoadStringFromResource(IDS_STRING327), MB_OK);
 					return;
 				}
 
@@ -682,7 +690,7 @@ dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
 
 		
 		CMenu* mmenu = AfxGetMainWnd()->GetMenu();
-		int pos = FindMenuItem(mmenu, _T("Tactic"));
+		int pos = FindMenuItem(mmenu, LoadStringFromResource(332));
 		CMenu* submenu = mmenu->GetSubMenu(pos);
 		int pos2 = FindMenuItem(submenu, name);
 		if (pos2 == -1)return;
@@ -708,13 +716,14 @@ dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
 
 	}
 
+
 	void CChildView::OnOptionsDeletetactic()
 	{
 		
-		if (MessageBox(_T("Do you whish to delete current tactic?"), _T("Question"), MB_YESNO | MB_ICONQUESTION) == IDYES)
-			if (currentTactic.name == _T("4:4:2"))
+		if (MessageBox(LoadStringFromResource(IDS_STRING328), LoadStringFromResource(IDS_STRING329), MB_YESNO | MB_ICONQUESTION) == IDYES)
+			if (currentTactic.name == LoadStringFromResource(IDS_STRING331))
 			{
-				MessageBox(_T("You can't delete default tactic"), _T("Fault"), MB_OK | MB_ICONWARNING);
+				MessageBox(LoadStringFromResource(IDS_STRING330), LoadStringFromResource(IDS_STRING329), MB_OK | MB_ICONWARNING);
 				return;
 			}
 		        deleteTactic(currentTactic);

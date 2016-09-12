@@ -37,6 +37,7 @@ public:
 	bool GetFont(LOGFONT& lf, COLORREF& col);
 	void RemoveMenu(CString name);
 	void deleteTactic(Tactic tak);
+	CString LoadStringFromResource(UINT id);
 // Overrides
 	protected:
 	
@@ -63,10 +64,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	
-	
 
-
-	
 };
-
 
