@@ -20,7 +20,7 @@ CChildView::CChildView():col(RGB(0,0,0))
 {
 	CClientDC hdc(0);
 	ZeroMemory(&lf, sizeof lf);
-	_tcscpy_s(lf.lfFaceName, LoadStringFromResource(335));
+	_tcscpy_s(lf.lfFaceName, LoadStringFromResource(IDS_STRING335));
 	lf.lfHeight = -12 * GetDeviceCaps(hdc, LOGPIXELSY) / 72;
 
 
@@ -61,6 +61,8 @@ BOOL CChildView::OnEraseBkgnd(CDC* pDC)
 {
 	return false;
 }
+
+
 
 BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs) 
 {
@@ -274,7 +276,7 @@ void CChildView::OnSize(UINT nType, int cx, int cy)
 
 void CChildView::InitPlayers442() {
 
-	GetClientRect(&rect);
+
 	double x, y;
 	GetClientRect(&rect);
 	if (rect.Width() == 0)return;
@@ -482,7 +484,8 @@ dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
 		dc.SetTextColor(col);
 		dc.SetTextAlign(TA_LEFT);
 		dc.SetBkMode(TRANSPARENT);
-		if (currentTactic.player[i].position == IDS_STRING315) gk = true;
+		if (currentTactic.player[i].position == LoadStringFromResource(IDS_STRING315))
+			gk = true;
 		dc.TextOut(x, y, currentTactic.player[i].position);
 
  				}
@@ -690,7 +693,7 @@ dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
 
 		
 		CMenu* mmenu = AfxGetMainWnd()->GetMenu();
-		int pos = FindMenuItem(mmenu, LoadStringFromResource(332));
+		int pos = FindMenuItem(mmenu, LoadStringFromResource(IDS_STRING332));
 		CMenu* submenu = mmenu->GetSubMenu(pos);
 		int pos2 = FindMenuItem(submenu, name);
 		if (pos2 == -1)return;
