@@ -622,7 +622,9 @@ dc.Arc(x1, y1, x2, y2, x3, y3, x4, y4);
 	bool CChildView::GetFont(LOGFONT& lf, COLORREF& col) {
 
 		CHOOSEFONT cf;
+		
 		ZeroMemory(&cf, sizeof cf);
+		cf.hwndOwner = *this;
 		cf.lStructSize = sizeof cf;
 		cf.Flags = CF_INITTOLOGFONTSTRUCT | CF_SCREENFONTS | CF_EFFECTS;
 		cf.lpLogFont = &lf;
