@@ -9,9 +9,8 @@
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
-#define ID_MENUSHOW   2000
 #endif
-
+#define ID_MENUSHOW   2000
 // CMainFrame
 
 IMPLEMENT_DYNAMIC(CMainFrame, CFrameWnd)
